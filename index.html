@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ИРК Калькулятор</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: #e0e0e0; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .card { background: #2d2d2d; padding: 30px; border-radius: 15px; border: 1px solid #444; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { text-align: center; color: #ffd700; margin-bottom: 25px; }
+        label { display: block; margin: 12px 0 6px; color: #ccc; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #555; background: #3d3d3d; color: #fff; box-sizing: border-box; }
+        button { width: 100%; padding: 14px; background: #b38f00; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; }
+        button:hover { background: #ffd700; }
+        #result { margin-top: 25px; padding: 20px; background: #363636; border-left: 4px solid #b38f00; border-radius: 8px; display: none; }
+        .rune { color: #ffd700; font-weight: bold; }
+        #error { color: #ff5555; margin-top: 10px; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Расчёт ИРК</h2>
+
+    <label>Язык</label>
+    <select id="lang">
+        <option value="ru">Русский</option>
+        <option value="en">English</option>
+    </select>
+
+    <label>Фамилия</label>
+    <input id="surname" placeholder="Фамилия">
+
+    <label>Имя</label>
+    <input id="name" placeholder="Имя">
+
+    <label>Отчество (если есть)</label>
+    <input id="patr" placeholder="Отчество">
+
+    <label>Дата рождения</label>
+    <input type="date" id="dob">
+
+    <button id="btn">РАССЧИТАТЬ</button>
+
+    <div id="result">
+        <p>🧬 Руна Сущности: <span id="re" class="rune"></span></p>
+        <p>👤 Руна Личности: <span id="rp" class="rune"></span></p>
+        <p>🏆 Золотая Руна: <span id="rd" class="rune"></span></p>
+    </div>
+
+    <div id="error">Ошибка расчёта</div>
+</div>
+
+<script>
+const runes = ["Вирд","Феху","Уруз","Турисаз","Ансуз","Райдо","Кеназ","Гебо","Вуньо","Хагалаз","Наутиз","Иса","Йера","Эйваз","Перт","Альгиз","Соулу","Тейваз","Беркана","Эваз","Манназ","Лагуз","Ингуз","Отал","Дагаз"];
+
+const maps = {
+    ru: {'а':1,'б':2,'в':3,'г':4,'д':5,'е':6,'ё':7,'ж':8,'з':9,'и':1,'й':2,'к':3,'л':4,'м':5,'н':6,'о':7,'п':8,'р':9,'с':1,'т':2,'у':3,'ф':4,'х':5,'ц':6,'ч':7,'ш':8,'щ':9,'ъ':1,'ы':2,'ь':3,'э':4,'ю':5,'я':6},
+    en: {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':1,'k':2,'l':3,'m':4,'n':5,'o':6,'p':7,'q':8,'r':9,'s':1,'t':2,'u':3,'v':4,'w':5,'x':6,'y':7,'z':8}
+};
+
+function charV(c, lang) { c = c.toLowerCase(); return maps[lang][c] || 0; }
+
+function sumStr(s, lang) {
+    let sum = 0;
+    for (let c of s) if (/[а-яёa-z]/i.test(c)) sum += charV(c, lang);
+    return sum;
+}
+
+function dr(n) { if (n <= 0) return 9; let r = n % 9; return r || 9; }
+
+function att(dr) { let m = dr % 3; return m || 3; }
+
+function maj(atts) {
+    let cnt = {1:0,2:0,3:0};
+    atts.forEach(a => { if (a >=1 && a <=3) cnt[a]++; });
+    let mx = Math.max(cnt[1], cnt[2], cnt[3]);
+    if (mx < 2) return null;
+    for (let k=1; k<=3; k++) if (cnt[k] === mx) return k;
+    return null;
+}
+
+function rune(g, a) {
+    if (g === 9) return "Вирд";
+    let i = (a-1)*8 + g;
+    return (i >=1 && i <=24) ? runes[i] : "—";
+}
+
+function calc() {
+    document.getElementById("error").style.display = "none";
+    document.getElementById("result").style.display = "none";
+
+    try {
+        let lang = document.getElementById("lang").value;
+        let sn = document.getElementById("surname").value.trim();
+        let nm = document.getElementById("name").value.trim();
+        let pt = document.getElementById("patr").value.trim();
+        let dob = document.getElementById("dob").value;
+
+        if (!sn  !nm  !dob) return;
+
+        let [y,m,d] = dob.split("-");
+
+        let sd = 0; if (d) for (let c of d) sd += +c || 0;
+        let sm = 0; if (m) for (let c of m) sm += +c || 0;
+
+let sy = 0; for (let c of y) sy += +c || 0;
+
+        let sb = sd + sm + sy;
+        let gb = dr(sb);
+
+        let drd = dr(sd), drm = dr(sm), dry = dr(sy);
+        let ab = maj([att(drd), att(drm), att(dry)]) || att(gb);
+        let re = rune(gb, ab);
+
+        let ss = sumStr(sn, lang);
+        let snm = sumStr(nm, lang);
+        let sp = sumStr(pt, lang);
+        let sf = ss + snm + sp;
+        let gp = dr(sf);
+
+        let drs = dr(ss), drn = dr(snm), drp = dr(sp);
+        let ap = maj([att(drs), att(drn), att(drp)]) || att(gp);
+        let rp = rune(gp, ap);
+
+        let gg = dr(gb + gp);
+
+        let drdn = dr(drd + drn);
+        let drmp = dr(drm + drp);
+        let drys = dr(dry + drs);
+
+        let ag = maj([att(drdn), att(drmp), att(drys)]) || att(gg);
+        let rd = rune(gg, ag);
+
+        document.getElementById("re").textContent = re;
+        document.getElementById("rp").textContent = rp;
+        document.getElementById("rd").textContent = rd;
+        document.getElementById("result").style.display = "block";
+    } catch (e) {
+        document.getElementById("error").style.display = "block";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("btn").addEventListener("click", calc);
+});
+</script>
+</body>
+</html>
