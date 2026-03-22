@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+
+<html lang="ru" style="background:#000">
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://fonts.googleapis.com https://fonts.gstatic.com;">
-  
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Расчёт ИРК от Таши Йотунхейм</title>
 <style>
@@ -14,336 +15,336 @@ html,body{overflow-x:hidden;max-width:100%;-webkit-overflow-scrolling:touch;back
 body{color:var(--green);font-family:'Share Tech Mono',monospace}
 
 /* ══════════════════════════
-   LOADER
+LOADER
 ══════════════════════════ */
 #loader{
-  position:fixed;inset:0;z-index:1000;
-  background:#000;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:40px 24px;
-  transition:opacity .6s ease;
+position:fixed;inset:0;z-index:1000;
+background:#000;
+display:flex;flex-direction:column;
+align-items:center;justify-content:center;
+padding:40px 24px;
+transition:opacity .6s ease;
 }
 #loader.hide{opacity:0;pointer-events:none}
 
 .loader-top{
-  width:100%;max-width:480px;
-  margin-bottom:48px;
+width:100%;max-width:480px;
+margin-bottom:48px;
 }
 .loader-lines{
-  font-family:'Share Tech Mono',monospace;
-  font-size:13px;line-height:2;
-  color:rgba(0,255,65,0.7);
-  min-height:120px;
+font-family:‘Share Tech Mono’,monospace;
+font-size:13px;line-height:2;
+color:rgba(0,255,65,0.7);
+min-height:120px;
 }
 .loader-lines .line{display:block}
 .loader-lines .dim{color:rgba(0,255,65,0.35)}
 
 .loader-box{
-  width:100%;max-width:480px;
-  border:1px solid rgba(0,255,65,0.3);
-  border-radius:10px;
-  padding:28px 32px;
-  background:rgba(0,255,65,0.03);
-  text-align:center;
+width:100%;max-width:480px;
+border:1px solid rgba(0,255,65,0.3);
+border-radius:10px;
+padding:28px 32px;
+background:rgba(0,255,65,0.03);
+text-align:center;
 }
 .loader-label{
-  font-family:'VT323',monospace;
-  font-size:20px;letter-spacing:6px;
-  color:rgba(0,255,65,0.5);
-  text-transform:uppercase;
-  margin-bottom:20px;
+font-family:‘VT323’,monospace;
+font-size:20px;letter-spacing:6px;
+color:rgba(0,255,65,0.5);
+text-transform:uppercase;
+margin-bottom:20px;
 }
 .loader-title{
-  font-family:'VT323',monospace;
-  font-size:clamp(20px,5vw,32px);
-  letter-spacing:4px;color:var(--green);
-  text-shadow:0 0 20px rgba(0,255,65,0.4);
-  margin-bottom:28px;
-  line-height:1.3;
+font-family:‘VT323’,monospace;
+font-size:clamp(20px,5vw,32px);
+letter-spacing:4px;color:var(–green);
+text-shadow:0 0 20px rgba(0,255,65,0.4);
+margin-bottom:28px;
+line-height:1.3;
 }
 .progress-wrap{
-  width:100%;height:3px;
-  background:rgba(0,255,65,0.1);
-  border-radius:2px;
-  overflow:hidden;
-  margin-bottom:10px;
+width:100%;height:3px;
+background:rgba(0,255,65,0.1);
+border-radius:2px;
+overflow:hidden;
+margin-bottom:10px;
 }
 .progress-bar{
-  height:100%;width:0%;
-  background:var(--green);
-  box-shadow:0 0 10px var(--green);
-  transition:width .05s linear;
+height:100%;width:0%;
+background:var(–green);
+box-shadow:0 0 10px var(–green);
+transition:width .05s linear;
 }
 .progress-pct{
-  font-family:'VT323',monospace;
-  font-size:18px;letter-spacing:4px;
-  color:var(--green);
+font-family:‘VT323’,monospace;
+font-size:18px;letter-spacing:4px;
+color:var(–green);
 }
 .loader-cursor{
-  display:inline-block;width:8px;height:14px;
-  background:var(--green);
-  animation:blink 1s step-end infinite;
-  vertical-align:middle;margin-left:2px;
-  box-shadow:0 0 6px var(--green);
+display:inline-block;width:8px;height:14px;
+background:var(–green);
+animation:blink 1s step-end infinite;
+vertical-align:middle;margin-left:2px;
+box-shadow:0 0 6px var(–green);
 }
 
 /* ══════════════════════════
-   MATRIX
+MATRIX
 ══════════════════════════ */
 #matrix-canvas{
-  position:fixed;top:0;left:0;
-  width:100%;height:100%;
-  z-index:0;pointer-events:none;
-  display:none;
+position:fixed;top:0;left:0;
+width:100%;height:100%;
+z-index:0;pointer-events:none;
+display:none;
 }
 
 /* ══════════════════════════
-   MAIN CONTENT
+MAIN CONTENT
 ══════════════════════════ */
 #main{
-  opacity:0;
-  transition:opacity .8s ease .2s;
+opacity:0;
+transition:opacity .8s ease .2s;
 }
 #main.visible{opacity:1}
 
 /* HERO */
 .hero{
-  position:relative;z-index:1;
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  overflow:hidden;
-  max-width:100vw;
+position:relative;z-index:1;
+min-height:100vh;
+display:grid;
+grid-template-columns:1fr 1fr;
+overflow:hidden;
+max-width:100vw;
 }
 @media(max-width:700px){
-  .hero{grid-template-columns:1fr;grid-template-rows:auto auto}
+.hero{grid-template-columns:1fr;grid-template-rows:auto auto}
 }
 
 .hero-photo-col{
-  position:relative;min-height:100vh;overflow:hidden;
+position:relative;min-height:100vh;overflow:hidden;
 }
 .hero-photo-col img{
-  width:100%;height:100%;
-  object-fit:cover;object-position:center 18%;
-  display:block;
-  filter:grayscale(1) contrast(1.15) brightness(0.9);
+width:100%;height:100%;
+object-fit:cover;object-position:center 18%;
+display:block;
+filter:grayscale(1) contrast(1.15) brightness(0.9);
 }
 .hero-photo-col::after{
-  content:'';position:absolute;inset:0;
-  background:rgba(0,30,8,0.45);
-  mix-blend-mode:multiply;pointer-events:none;
+content:’’;position:absolute;inset:0;
+background:rgba(0,30,8,0.45);
+mix-blend-mode:multiply;pointer-events:none;
 }
 .hero-photo-col::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to right, transparent 55%, #000 100%);
-  z-index:2;pointer-events:none;
+content:’’;position:absolute;inset:0;
+background:linear-gradient(to right, transparent 55%, #000 100%);
+z-index:2;pointer-events:none;
 }
 @media(max-width:700px){
-  .hero-photo-col{min-height:65vw;max-height:72vw}
-  .hero-photo-col::before{background:linear-gradient(to bottom,transparent 55%,#000 100%)}
+.hero-photo-col{min-height:65vw;max-height:72vw}
+.hero-photo-col::before{background:linear-gradient(to bottom,transparent 55%,#000 100%)}
 }
 
 .hero-text-col{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;
-  justify-content:center;
-  padding:60px 48px 60px 32px;
-  background:linear-gradient(to left,#000 60%,transparent);
+position:relative;z-index:2;
+display:flex;flex-direction:column;
+justify-content:center;
+padding:60px 48px 60px 32px;
+background:linear-gradient(to left,#000 60%,transparent);
 }
 @media(max-width:700px){
-  .hero-text-col{padding:32px 24px 60px;background:#000}
+.hero-text-col{padding:32px 24px 60px;background:#000}
 }
 
 .hero-eyebrow{
-  font-size:10px;letter-spacing:6px;color:var(--green-dim);
-  text-transform:uppercase;margin-bottom:20px;
-  display:flex;align-items:center;gap:10px;
+font-size:10px;letter-spacing:6px;color:var(–green-dim);
+text-transform:uppercase;margin-bottom:20px;
+display:flex;align-items:center;gap:10px;
 }
 .cursor{
-  display:inline-block;width:9px;height:15px;background:var(--green);
-  animation:blink 1s step-end infinite;vertical-align:middle;
-  box-shadow:0 0 8px var(--green);flex-shrink:0;
+display:inline-block;width:9px;height:15px;background:var(–green);
+animation:blink 1s step-end infinite;vertical-align:middle;
+box-shadow:0 0 8px var(–green);flex-shrink:0;
 }
 .loader-dots{display:inline}
 .ld{}
-.lc{animation:blink 1s step-end infinite;color:var(--green)}
+.lc{animation:blink 1s step-end infinite;color:var(–green)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
 .hero-title{
-  font-family:'Cinzel',serif;
-  font-size:clamp(16px,2.8vw,26px);font-weight:700;
-  letter-spacing:2px;color:var(--green);
-  text-shadow:0 0 20px rgba(0,255,65,0.5),0 0 50px rgba(0,255,65,0.2);
-  text-transform:uppercase;line-height:1.5;
-  margin-bottom:28px;
+font-family:‘Cinzel’,serif;
+font-size:clamp(16px,2.8vw,26px);font-weight:700;
+letter-spacing:2px;color:var(–green);
+text-shadow:0 0 20px rgba(0,255,65,0.5),0 0 50px rgba(0,255,65,0.2);
+text-transform:uppercase;line-height:1.5;
+margin-bottom:28px;
 }
 .hero-runes{
-  font-family:'VT323',monospace;font-size:22px;
-  letter-spacing:8px;color:rgba(0,255,65,0.35);margin-bottom:32px;
+font-family:‘VT323’,monospace;font-size:22px;
+letter-spacing:8px;color:rgba(0,255,65,0.35);margin-bottom:32px;
 }
 .hero-cta{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:13px 36px;
-  border:1px solid var(--green);border-radius:6px;
-  font-family:'VT323',monospace;font-size:20px;letter-spacing:6px;
-  color:var(--green);text-decoration:none;text-transform:uppercase;
-  background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
-  position:relative;overflow:hidden;transition:color .25s;
-  align-self:flex-start;margin-bottom:40px;
+display:inline-flex;align-items:center;gap:10px;
+padding:13px 36px;
+border:1px solid var(–green);border-radius:6px;
+font-family:‘VT323’,monospace;font-size:20px;letter-spacing:6px;
+color:var(–green);text-decoration:none;text-transform:uppercase;
+background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+position:relative;overflow:hidden;transition:color .25s;
+align-self:flex-start;margin-bottom:40px;
 }
-.hero-cta::before{content:'';position:absolute;inset:0;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;z-index:-1}
+.hero-cta::before{content:’’;position:absolute;inset:0;background:var(–green);transform:scaleX(0);transform-origin:left;transition:transform .3s ease;z-index:-1}
 .hero-cta:hover::before{transform:scaleX(1)}
 .hero-cta:hover{color:#000}
 
 /* scroll arrow */
 .scroll-arrow{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  cursor:pointer;
+display:flex;flex-direction:column;align-items:center;gap:4px;
+cursor:pointer;
 }
 .scroll-arrow-icon{
-  width:28px;height:28px;
-  border-right:2px solid rgba(0,255,65,0.5);
-  border-bottom:2px solid rgba(0,255,65,0.5);
-  transform:rotate(45deg);
-  animation:arrow-bounce 1.8s ease-in-out infinite;
+width:28px;height:28px;
+border-right:2px solid rgba(0,255,65,0.5);
+border-bottom:2px solid rgba(0,255,65,0.5);
+transform:rotate(45deg);
+animation:arrow-bounce 1.8s ease-in-out infinite;
 }
 .scroll-arrow-icon:nth-child(2){animation-delay:.2s;opacity:.5}
 .scroll-arrow-label{
-  font-size:9px;letter-spacing:4px;color:rgba(0,255,65,0.4);
-  text-transform:uppercase;
+font-size:9px;letter-spacing:4px;color:rgba(0,255,65,0.4);
+text-transform:uppercase;
 }
 @keyframes arrow-bounce{
-  0%,100%{transform:rotate(45deg) translate(0,0);opacity:0.5}
-  50%{transform:rotate(45deg) translate(4px,4px);opacity:1}
+0%,100%{transform:rotate(45deg) translate(0,0);opacity:0.5}
+50%{transform:rotate(45deg) translate(4px,4px);opacity:1}
 }
 
 /* DIVIDER */
 .divider{
-  position:relative;z-index:1;
-  display:flex;align-items:center;gap:18px;
-  padding:0 40px;margin:0 auto;max-width:900px;width:100%;
+position:relative;z-index:1;
+display:flex;align-items:center;gap:18px;
+padding:0 40px;margin:0 auto;max-width:900px;width:100%;
 }
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,65,0.3),transparent)}
-.divider span{font-family:'VT323',monospace;font-size:18px;color:rgba(0,255,65,0.3);letter-spacing:6px;white-space:nowrap}
+.divider::before,.divider::after{content:’’;flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,65,0.3),transparent)}
+.divider span{font-family:‘VT323’,monospace;font-size:18px;color:rgba(0,255,65,0.3);letter-spacing:6px;white-space:nowrap}
 
 /* SECTIONS */
 .section-wrap{position:relative;z-index:1;padding:24px;max-width:900px;margin:0 auto;width:100%}
 .glass{
-  background:rgba(0,0,0,0.72);
-  border:1px solid rgba(0,255,65,0.14);
-  border-radius:14px;padding:52px 40px;
-  backdrop-filter:blur(12px);
+background:rgba(0,0,0,0.72);
+border:1px solid rgba(0,255,65,0.14);
+border-radius:14px;padding:52px 40px;
+backdrop-filter:blur(12px);
 }
 @media(max-width:600px){.glass{padding:32px 20px}}
-.section-eye{font-size:10px;letter-spacing:5px;color:var(--green-dim);text-transform:uppercase;margin-bottom:14px;display:block}
+.section-eye{font-size:10px;letter-spacing:5px;color:var(–green-dim);text-transform:uppercase;margin-bottom:14px;display:block}
 .section-title{
-  font-family:'Cinzel',serif;font-size:clamp(17px,2.8vw,23px);font-weight:900;
-  letter-spacing:3px;color:var(--green);
-  text-shadow:0 0 15px rgba(0,255,65,0.3);
-  text-transform:uppercase;margin-bottom:36px;line-height:1.3;
+font-family:‘Cinzel’,serif;font-size:clamp(17px,2.8vw,23px);font-weight:900;
+letter-spacing:3px;color:var(–green);
+text-shadow:0 0 15px rgba(0,255,65,0.3);
+text-transform:uppercase;margin-bottom:36px;line-height:1.3;
 }
 .positions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:40px}
 @media(max-width:580px){.positions{grid-template-columns:1fr}}
 .pos-card{
-  background:rgba(0,255,65,0.04);
-  border:1px solid rgba(0,255,65,0.12);
-  border-radius:10px;padding:24px 18px;
+background:rgba(0,255,65,0.04);
+border:1px solid rgba(0,255,65,0.12);
+border-radius:10px;padding:24px 18px;
 }
 .pos-num{font-size:10px;letter-spacing:4px;color:rgba(0,255,65,0.35);margin-bottom:8px;text-transform:uppercase}
 .pos-name{
-  font-family:'Cinzel',serif;font-size:13px;font-weight:700;letter-spacing:2px;
-  color:var(--green);text-shadow:0 0 8px rgba(0,255,65,0.25);
-  margin-bottom:12px;text-transform:uppercase;
+font-family:‘Cinzel’,serif;font-size:13px;font-weight:700;letter-spacing:2px;
+color:var(–green);text-shadow:0 0 8px rgba(0,255,65,0.25);
+margin-bottom:12px;text-transform:uppercase;
 }
 .pos-text{font-size:13px;line-height:1.9;color:#c8ffda}
 .about-body{display:flex;flex-direction:column;gap:16px}
 .about-body p{font-size:13px;line-height:1.95;color:#c8ffda}
-.about-body .quote{border-left:2px solid var(--green);padding:14px 18px;background:rgba(0,255,65,0.04);border-radius:0 8px 8px 0}
+.about-body .quote{border-left:2px solid var(–green);padding:14px 18px;background:rgba(0,255,65,0.04);border-radius:0 8px 8px 0}
 .about-body .quote p{color:#ddfff0;font-style:italic}
 
 /* CALC */
 .calc-wrap{
-  position:relative;z-index:1;
-  padding:20px 16px 80px;
-  display:flex;flex-direction:column;align-items:center;
+position:relative;z-index:1;
+padding:20px 16px 80px;
+display:flex;flex-direction:column;align-items:center;
 }
 .calc-header{text-align:center;max-width:680px;margin:0 auto 40px}
 .calc-header p{font-size:13px;line-height:1.8;color:#c8ffda;margin-top:12px}
 .card{
-  background:rgba(0,0,0,0.72);backdrop-filter:blur(12px);
-  border:1px solid rgba(0,255,65,0.28);border-radius:14px;
-  padding:32px 40px 40px;width:calc(100% - 32px);max-width:680px;
-  box-shadow:0 0 40px rgba(0,255,65,0.05);
-  position:relative;overflow:hidden;
+background:rgba(0,0,0,0.72);backdrop-filter:blur(12px);
+border:1px solid rgba(0,255,65,0.28);border-radius:14px;
+padding:32px 40px 40px;width:calc(100% - 32px);max-width:680px;
+box-shadow:0 0 40px rgba(0,255,65,0.05);
+position:relative;overflow:hidden;
 }
 .card::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.018) 2px,rgba(0,255,65,0.018) 4px);
-  pointer-events:none;z-index:1;border-radius:14px;
+content:’’;position:absolute;inset:0;
+background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.018) 2px,rgba(0,255,65,0.018) 4px);
+pointer-events:none;z-index:1;border-radius:14px;
 }
 .card-inner{position:relative;z-index:2}
 .card-title{
-  font-family:'VT323',monospace;font-size:22px;letter-spacing:5px;
-  color:var(--green);text-align:center;margin-bottom:24px;
-  text-shadow:0 0 10px var(--green);
-  display:flex;align-items:center;justify-content:center;gap:8px;
+font-family:‘VT323’,monospace;font-size:22px;letter-spacing:5px;
+color:var(–green);text-align:center;margin-bottom:24px;
+text-shadow:0 0 10px var(–green);
+display:flex;align-items:center;justify-content:center;gap:8px;
 }
-label{display:block;font-size:10px;letter-spacing:3px;color:var(--green-dim);margin:16px 0 6px;text-transform:uppercase}
+label{display:block;font-size:10px;letter-spacing:3px;color:var(–green-dim);margin:16px 0 6px;text-transform:uppercase}
 input,select{
-  width:100%;padding:10px 12px;
-  background:rgba(0,255,65,0.05);border:1px solid rgba(0,255,65,0.2);border-radius:6px;
-  color:var(--green);font-family:'Share Tech Mono',monospace;font-size:14px;outline:none;
-  transition:border-color .2s,box-shadow .2s;caret-color:var(--green);
+width:100%;padding:10px 12px;
+background:rgba(0,255,65,0.05);border:1px solid rgba(0,255,65,0.2);border-radius:6px;
+color:var(–green);font-family:‘Share Tech Mono’,monospace;font-size:14px;outline:none;
+transition:border-color .2s,box-shadow .2s;caret-color:var(–green);
 }
 input::placeholder{color:rgba(0,255,65,0.2)}
-input:focus,select:focus{border-color:var(--green);box-shadow:0 0 10px rgba(0,255,65,0.15)}
-select option{background:#020f04;color:var(--green)}
-input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1) sepia(1) saturate(5) hue-rotate(90deg);opacity:0.4;cursor:pointer}
-input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:100% !important;box-sizing:border-box !important;padding:10px 12px !important;height:auto !important;min-height:44px;line-height:normal}
+input:focus,select:focus{border-color:var(–green);box-shadow:0 0 10px rgba(0,255,65,0.15)}
+select option{background:#020f04;color:var(–green)}
+input[type=“date”]::-webkit-calendar-picker-indicator{filter:invert(1) sepia(1) saturate(5) hue-rotate(90deg);opacity:0.4;cursor:pointer}
+input[type=“date”]{-webkit-appearance:none;appearance:none;display:block;width:100% !important;box-sizing:border-box !important;padding:10px 12px !important;height:auto !important;min-height:44px;line-height:normal}
 .btn{
-  width:100%;margin-top:24px;padding:13px;
-  background:rgba(0,0,0,0.4);border:1px solid var(--green);border-radius:6px;
-  color:var(--green);font-family:'VT323',monospace;font-size:20px;
-  letter-spacing:5px;text-transform:uppercase;cursor:pointer;
-  transition:color .2s;position:relative;overflow:hidden;
+width:100%;margin-top:24px;padding:13px;
+background:rgba(0,0,0,0.4);border:1px solid var(–green);border-radius:6px;
+color:var(–green);font-family:‘VT323’,monospace;font-size:20px;
+letter-spacing:5px;text-transform:uppercase;cursor:pointer;
+transition:color .2s;position:relative;overflow:hidden;
 }
-.btn::before{content:'';position:absolute;inset:0;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .25s ease;z-index:0}
+.btn::before{content:’’;position:absolute;inset:0;background:var(–green);transform:scaleX(0);transform-origin:left;transition:transform .25s ease;z-index:0}
 .btn:hover::before{transform:scaleX(1)}
 .btn:hover{color:#000}
 .btn span{position:relative;z-index:1}
 #result{display:none;margin-top:28px;border-top:1px solid rgba(0,255,65,0.12);padding-top:24px}
 .snapshot-label{text-align:center;font-size:9px;letter-spacing:4px;color:rgba(0,255,65,0.4);text-transform:uppercase;margin-bottom:14px}
 .rune-snapshot{
-  display:flex;justify-content:center;align-items:flex-start;gap:16px;
-  margin-bottom:28px;padding:20px 12px 18px;
-  border:1px solid rgba(0,255,65,0.25);border-radius:10px;
-  background:rgba(0,255,65,0.03);animation:fadeIn .4s ease both;
+display:flex;justify-content:center;align-items:flex-start;gap:16px;
+margin-bottom:28px;padding:20px 12px 18px;
+border:1px solid rgba(0,255,65,0.25);border-radius:10px;
+background:rgba(0,255,65,0.03);animation:fadeIn .4s ease both;
 }
 .rune-cell{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0;padding:0 4px}
 .rune-cell-symbol{
-  font-family:'VT323',monospace;font-size:clamp(48px,13vw,72px);line-height:1;
-  color:var(--green);text-shadow:0 0 14px var(--green),0 0 30px rgba(0,255,65,0.4);
-  animation:glow-pulse 3s ease-in-out infinite;
+font-family:‘VT323’,monospace;font-size:clamp(48px,13vw,72px);line-height:1;
+color:var(–green);text-shadow:0 0 14px var(–green),0 0 30px rgba(0,255,65,0.4);
+animation:glow-pulse 3s ease-in-out infinite;
 }
 .rune-cell:nth-child(2) .rune-cell-symbol{animation-delay:.6s}
 .rune-cell:nth-child(3) .rune-cell-symbol{animation-delay:1.2s}
-@keyframes glow-pulse{0%,100%{text-shadow:0 0 12px var(--green),0 0 28px rgba(0,255,65,0.4)}50%{text-shadow:0 0 22px var(--green),0 0 50px rgba(0,255,65,0.65)}}
-.rune-cell-name{font-family:'VT323',monospace;font-size:13px;letter-spacing:0px;color:var(--green);text-align:center;opacity:0.85;white-space:nowrap;line-height:1.2}
-.rune-cell-label{font-size:8px;letter-spacing:2px;color:var(--green-dim);opacity:0.55;text-align:center;text-transform:uppercase}
-.rune-divider{align-self:center;font-family:'VT323',monospace;font-size:28px;color:rgba(0,255,65,0.18);margin-top:8px}
+@keyframes glow-pulse{0%,100%{text-shadow:0 0 12px var(–green),0 0 28px rgba(0,255,65,0.4)}50%{text-shadow:0 0 22px var(–green),0 0 50px rgba(0,255,65,0.65)}}
+.rune-cell-name{font-family:‘VT323’,monospace;font-size:13px;letter-spacing:0px;color:var(–green);text-align:center;opacity:0.85;white-space:nowrap;line-height:1.2}
+.rune-cell-label{font-size:8px;letter-spacing:2px;color:var(–green-dim);opacity:0.55;text-align:center;text-transform:uppercase}
+.rune-divider{align-self:center;font-family:‘VT323’,monospace;font-size:28px;color:rgba(0,255,65,0.18);margin-top:8px}
 .result-block{
-  margin-bottom:16px;padding:14px 16px;
-  border:1px solid rgba(0,255,65,0.12);border-left:3px solid var(--green);
-  border-radius:0 8px 8px 0;background:rgba(0,0,0,0.3);
-  animation:fadeIn .4s ease both;
+margin-bottom:16px;padding:14px 16px;
+border:1px solid rgba(0,255,65,0.12);border-left:3px solid var(–green);
+border-radius:0 8px 8px 0;background:rgba(0,0,0,0.3);
+animation:fadeIn .4s ease both;
 }
 .result-block:nth-child(2){animation-delay:.1s}
 .result-block:nth-child(3){animation-delay:.2s}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.result-label{font-size:9px;letter-spacing:3px;color:var(--green-dim);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:flex-start;gap:8px}
+.result-label{font-size:9px;letter-spacing:3px;color:var(–green-dim);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:flex-start;gap:8px}
 .desc{font-size:13px;line-height:1.75;color:#c8ffda}
-.block-rune-sym{font-family:'VT323',monospace;font-size:18px;color:var(--green);text-shadow:0 0 8px var(--green);vertical-align:middle;margin-right:8px}
+.block-rune-sym{font-family:‘VT323’,monospace;font-size:18px;color:var(–green);text-shadow:0 0 8px var(–green);vertical-align:middle;margin-right:8px}
 #error{display:none;margin-top:14px;text-align:center;font-size:11px;letter-spacing:2px;color:#ff4444;text-shadow:0 0 8px #ff0000}
 
 /* REVEAL */
@@ -352,17 +353,19 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 
 /* FOOTER */
 .footer{
-  position:relative;z-index:1;padding:28px 24px;text-align:center;
-  border-top:1px solid rgba(0,255,65,0.08);
-  background:rgba(0,0,0,0.7);
+position:relative;z-index:1;padding:28px 24px;text-align:center;
+border-top:1px solid rgba(0,255,65,0.08);
+background:rgba(0,0,0,0.7);
 }
-.footer-runes{font-family:'VT323',monospace;font-size:18px;letter-spacing:5px;color:rgba(0,255,65,0.2);margin-bottom:8px}
+.footer-runes{font-family:‘VT323’,monospace;font-size:18px;letter-spacing:5px;color:rgba(0,255,65,0.2);margin-bottom:8px}
 .footer-copy{font-size:10px;letter-spacing:3px;color:rgba(0,255,65,0.35);text-transform:uppercase}
 </style>
+
 </head>
 <body>
 
 <!-- ══ LOADER ══ -->
+
 <div id="loader">
   <div class="loader-top">
     <div class="loader-lines" id="loaderLines"></div>
@@ -376,9 +379,11 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 </div>
 
 <!-- ══ MATRIX ══ -->
+
 <canvas id="matrix-canvas"></canvas>
 
 <!-- ══ MAIN ══ -->
+
 <div id="main">
 
 <section class="hero">
@@ -482,206 +487,208 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 </div><!-- /main -->
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
 (function() {
-  function init() {
+function init() {
 
 /* ══ IRK CALC ══ */
-const runes=["Вирд","Феху","Уруз","Турисаз","Ансуз","Райдо","Кеназ","Гебо","Вуньо","Хагалаз","Наутиз","Иса","Йера","Эйваз","Перт","Альгиз","Соулу","Тейваз","Беркана","Эваз","Манназ","Лагуз","Ингуз","Отал","Дагаз"];
-const RS={"Вирд":"□","Феху":"ᚠ","Уруз":"ᚢ","Турисаз":"ᚦ","Ансуз":"ᚨ","Райдо":"ᚱ","Кеназ":"ᚲ","Гебо":"ᚷ","Вуньо":"ᚹ","Хагалаз":"ᚺ","Наутиз":"ᚾ","Иса":"ᛁ","Йера":"ᛃ","Эйваз":"ᛇ","Перт":"ᛈ","Альгиз":"ᛉ","Соулу":"ᛋ","Тейваз":"ᛏ","Беркана":"ᛒ","Эваз":"ᛖ","Манназ":"ᛗ","Лагуз":"ᛚ","Ингуз":"ᛜ","Отал":"ᛟ","Дагаз":"ᛞ"};
-const D={"Вирд":{essence:"Ты приходишь в этот мир без груза предыдущих жизней. Никаких долгов или готовых путей. Это полная свобода, где каждый шаг творит твою реальность.",personality:"Жизнь для тебя — открытая книга, где страницы пусты. Ты сам рисуешь сюжет, но иногда ветер перелистывает их хаотично, если не ловить нить повествования.",destiny:"В конце пути мир увидит историю, написанную одной рукой. Никаких древних пророчеств, только эхо твоих выборов, разнесённое ветром."},"Феху":{essence:"С рождения ты магнит для потоков, где вещи и возможности стекаются, словно река к морю.",personality:"Ты плетёшь сети из сделок и обменов, где каждый узел — шанс превратить искру в пламя достатка.",destiny:"Мир запомнит тебя как того, кто превращал пустыню в сад, оставляя следы изобилия для странников."},"Уруз":{essence:"В тебе бьёт ключом первозданная мощь, как река, что пробивает скалы, не зная усталости.",personality:"Ты идёшь сквозь бури, где тело становится молотом, а воля — наковальней, куя победу из усилий.",destiny:"В легендах ты станешь горой, что не сломалась, и эхом, что будит силу в тех, кто слышит."},"Турисаз":{essence:"Тебя окружают невидимые шипы, где каждый удар возвращается бумерангом, охраняя твою суть от чужой тени.",personality:"Ты входишь в битвы, где ярость превращается в меч, а решимость — в щит, рассекая стены судьбы.",destiny:"В сказаниях ты останешься стражем, чьи следы — разрушенные преграды, открывающие дороги для других."},"Ансуз":{essence:"Слово в тебе — как ветер, несущий шёпот богов, раскрывающий двери к скрытым знаниям.",personality:"Ты ткёшь нити разговоров, где голос становится ключом, отпирающим сердца и умы.",destiny:"Мир унесёт твои слова как семена, что прорастут в умах, меняя ход историй."},"Райдо":{essence:"Ты рождаешься с компасом внутри, где каждый шаг — часть вечного странствия, ведущего сквозь горизонты.",personality:"Ты мчишься по тропам перемен, где ветер в спине, а мир раскрывается, как карта сокровищ.",destiny:"В воспоминаниях ты станешь странником, чьи пути стали картой для потерянных душ."},"Кеназ":{essence:"В тебе тлеет искра, что разгорается в пламя, освещая тени и рождая формы из пустоты.",personality:"Ты лепишь реальность из огня идей, где каждый всплеск — новый шедевр в хаосе повседневности.",destiny:"Твои огни будут гореть в ночи, направляя тех, кто ищет свет в темноте."},"Гебо":{essence:"Обмен течёт в тебе, как река, где дающее и берущие сливаются в один поток.",personality:"Ты связываешь нити судеб, где каждый узел — встреча, полная взаимного роста.",destiny:"В историях ты останешься мостиком, соединившим души в вечном танце."},"Вуньо":{essence:"Радость бьёт в тебе ключом, как источник, что питает всё вокруг теплом и светом.",personality:"Ты плетёшь дни из смеха и гармонии, где каждый миг — праздник души.",destiny:"Твои улыбки разлетятся, как семена, расцветая в сердцах других."},"Хагалаз":{essence:"Буря, что разрывает ткани реальности, очищая путь для неведомого — твоя внутренняя стихия, сеющая хаос ради рождения.",personality:"Ты становишься вихрем, сметающим отжившее, где каждый кризис — дверь в новое.",destiny:"Твои бури станут легендами, что смели старые миры, оставив землю, готовую к свежим семенам."},"Наутиз":{essence:"Тени нужды и ограничений окутывают тебя с рождения, превращая давление в алмаз, закалённый в тисках судьбы.",personality:"Ты идёшь тропой терпения, где каждый шаг под гнётом рождает силу, а нужда становится учителем.",destiny:"Твои испытания разожгут огонь стойкости в других, оставив эхо мудрости, выкованной в огне ограничений."},"Иса":{essence:"Лёд, что сковывает реки, хранит в себе тишину ожиданий, готовую к пробуждению в нужный миг.",personality:"Ты замираешь в паузе, где время кристаллизуется, давая ясность мыслям и силы для точного удара.",destiny:"Твоя тишина станет убежищем для бурь мира, эхом, что учит ценить покой перед бурей."},"Йера":{essence:"Круги времени вертятся вокруг тебя, обещая урожай после сева, в ритме сезонов и циклов жизни.",personality:"Ты плетёшь нити терпения, где труд медленно зреет, превращая семена в золотые плоды.",destiny:"Твои циклы станут уроком для мира, оставив следы стабильности, что питают будущие поколения."},"Эйваз":{essence:"Ветви дерева миров тянутся через тебя, соединяя глубины земли с высотами небес в едином дыхании.",personality:"Ты переходишь грани, где шаманские тропы ведут к слиянию реальностей, открывая двери невидимого.",destiny:"Твои мосты станут путями для странников, эхом связи, что объединяет разрозненное в целое."},"Перт":{essence:"Колодец тайн прячется в твоей глубине, полный древних вод, что шепчут о скрытых сокровищах.",personality:"Ты ныряешь в завесы интуиции, где гадания и рождения раскрывают невидимое в повседневном.",destiny:"Твои загадки станут легендами, манящими искателей к глубинам, что ты открыл."},"Альгиз":{essence:"Ветви охраны раскидываются над тобой, связывая с силами, что отводят тени и бурю.",personality:"Ты стоишь как страж, где молитвы и помощь другим становятся твоим доспехом в потоке жизни.",destiny:"Твоя защита станет убежищем, эхом, что охраняет души в мире хаоса."},"Соулу":{essence:"Солнце разгорается в твоей груди, неся энергию, что рассеивает мрак и дарит тепло.",personality:"Ты ведёшь через свет, где лидерство и вдохновение зажигают пути в темноте.",destiny:"Твои лучи станут вечным огнём, освещающим дороги для тех, кто следует за тобой."},"Тейваз":{essence:"Стрелка истины всегда указывает направление, ведя тебя через туман к чести и правде.",personality:"Ты сражаешься за честь, где битвы становятся полотном для картин справедливости.",destiny:"Твои дела станут маяком, что направляет других к истине в мире лжи."},"Беркана":{essence:"Рост течёт через тебя, как река, что питает землю, рождая жизнь из семян.",personality:"Ты заботишься, где любовь и творчество расцветают, превращая пустоту в сад.",destiny:"Твои корни станут лесом, дающим тень и плоды для будущих путников."},"Эваз":{essence:"Дуэт гармонии звучит в тебе, где два пути сливаются в один поток движения.",personality:"Ты мчишься в паре, где доверие превращает одиночество в совместный полёт.",destiny:"Твои союзы станут легендами, что связывают сердца в вечном ритме."},"Манназ":{essence:"Зеркало души отражает в тебе суть человечности, полную глубин и отражений.",personality:"Ты познаёшь через встречи, где общество становится зеркалом для самооткрытия.",destiny:"Твои уроки станут компасом, ведущим других к пониманию себя."},"Лагуз":{essence:"Вы человек, который живет в потоке жизни и прислушивается к своим ощущениям, умеете адаптироваться к переменам.",personality:"В мире чаще всего вы проявляетесь как чуткий и внимательный человек, который умеет подстраиваться под людей и обстоятельства.",destiny:"Ваше наследие — помогать себе и другим продвигаться вперед, используя возможности, которые появляются."},"Ингуз":{essence:"Вы человек, который любит доводить дела до конца и видеть результаты своих действий.",personality:"Снаружи вы проявляетесь как активный и надежный человек, который умеет брать инициативу.",destiny:"Ваше наследие — создавать новые возможности, которые приносят пользу вам и окружающим."},"Отал":{essence:"По своей природе вы человек, для которого важны стабильность, свои корни и чувство опоры в жизни.",personality:"Внешне вы проявляетесь как человек надежный, собранный, умеющий держать границы.",destiny:"Ваше наследие связано с темой рода, дома и сохранения ценностей."},"Дагаз":{essence:"В основе вашей природы заложена энергия перемен и обновления. Вы внутренне стремитесь к развитию.",personality:"В поведении вы проявляетесь как человек, который легко принимает перемены и способен быстро перестраиваться.",destiny:"Ваше наследие связано со способностью начинать новые этапы и обновлять жизненные процессы."}};
-const maps={ru:{'а':1,'б':2,'в':3,'г':4,'д':5,'е':6,'ё':7,'ж':8,'з':9,'и':1,'й':2,'к':3,'л':4,'м':5,'н':6,'о':7,'п':8,'р':9,'с':1,'т':2,'у':3,'ф':4,'х':5,'ц':6,'ч':7,'ш':8,'щ':9,'ъ':1,'ы':2,'ь':3,'э':4,'ю':5,'я':6},en:{'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8,'i':9,'j':1,'k':2,'l':3,'m':4,'n':5,'o':6,'p':7,'q':8,'r':9,'s':1,'t':2,'u':3,'v':4,'w':5,'x':6,'y':7,'z':8}};
+const runes=[“Вирд”,“Феху”,“Уруз”,“Турисаз”,“Ансуз”,“Райдо”,“Кеназ”,“Гебо”,“Вуньо”,“Хагалаз”,“Наутиз”,“Иса”,“Йера”,“Эйваз”,“Перт”,“Альгиз”,“Соулу”,“Тейваз”,“Беркана”,“Эваз”,“Манназ”,“Лагуз”,“Ингуз”,“Отал”,“Дагаз”];
+const RS={“Вирд”:“□”,“Феху”:“ᚠ”,“Уруз”:“ᚢ”,“Турисаз”:“ᚦ”,“Ансуз”:“ᚨ”,“Райдо”:“ᚱ”,“Кеназ”:“ᚲ”,“Гебо”:“ᚷ”,“Вуньо”:“ᚹ”,“Хагалаз”:“ᚺ”,“Наутиз”:“ᚾ”,“Иса”:“ᛁ”,“Йера”:“ᛃ”,“Эйваз”:“ᛇ”,“Перт”:“ᛈ”,“Альгиз”:“ᛉ”,“Соулу”:“ᛋ”,“Тейваз”:“ᛏ”,“Беркана”:“ᛒ”,“Эваз”:“ᛖ”,“Манназ”:“ᛗ”,“Лагуз”:“ᛚ”,“Ингуз”:“ᛜ”,“Отал”:“ᛟ”,“Дагаз”:“ᛞ”};
+const D={“Вирд”:{essence:“Ты приходишь в этот мир без груза предыдущих жизней. Никаких долгов или готовых путей. Это полная свобода, где каждый шаг творит твою реальность.”,personality:“Жизнь для тебя — открытая книга, где страницы пусты. Ты сам рисуешь сюжет, но иногда ветер перелистывает их хаотично, если не ловить нить повествования.”,destiny:“В конце пути мир увидит историю, написанную одной рукой. Никаких древних пророчеств, только эхо твоих выборов, разнесённое ветром.”},“Феху”:{essence:“С рождения ты магнит для потоков, где вещи и возможности стекаются, словно река к морю.”,personality:“Ты плетёшь сети из сделок и обменов, где каждый узел — шанс превратить искру в пламя достатка.”,destiny:“Мир запомнит тебя как того, кто превращал пустыню в сад, оставляя следы изобилия для странников.”},“Уруз”:{essence:“В тебе бьёт ключом первозданная мощь, как река, что пробивает скалы, не зная усталости.”,personality:“Ты идёшь сквозь бури, где тело становится молотом, а воля — наковальней, куя победу из усилий.”,destiny:“В легендах ты станешь горой, что не сломалась, и эхом, что будит силу в тех, кто слышит.”},“Турисаз”:{essence:“Тебя окружают невидимые шипы, где каждый удар возвращается бумерангом, охраняя твою суть от чужой тени.”,personality:“Ты входишь в битвы, где ярость превращается в меч, а решимость — в щит, рассекая стены судьбы.”,destiny:“В сказаниях ты останешься стражем, чьи следы — разрушенные преграды, открывающие дороги для других.”},“Ансуз”:{essence:“Слово в тебе — как ветер, несущий шёпот богов, раскрывающий двери к скрытым знаниям.”,personality:“Ты ткёшь нити разговоров, где голос становится ключом, отпирающим сердца и умы.”,destiny:“Мир унесёт твои слова как семена, что прорастут в умах, меняя ход историй.”},“Райдо”:{essence:“Ты рождаешься с компасом внутри, где каждый шаг — часть вечного странствия, ведущего сквозь горизонты.”,personality:“Ты мчишься по тропам перемен, где ветер в спине, а мир раскрывается, как карта сокровищ.”,destiny:“В воспоминаниях ты станешь странником, чьи пути стали картой для потерянных душ.”},“Кеназ”:{essence:“В тебе тлеет искра, что разгорается в пламя, освещая тени и рождая формы из пустоты.”,personality:“Ты лепишь реальность из огня идей, где каждый всплеск — новый шедевр в хаосе повседневности.”,destiny:“Твои огни будут гореть в ночи, направляя тех, кто ищет свет в темноте.”},“Гебо”:{essence:“Обмен течёт в тебе, как река, где дающее и берущие сливаются в один поток.”,personality:“Ты связываешь нити судеб, где каждый узел — встреча, полная взаимного роста.”,destiny:“В историях ты останешься мостиком, соединившим души в вечном танце.”},“Вуньо”:{essence:“Радость бьёт в тебе ключом, как источник, что питает всё вокруг теплом и светом.”,personality:“Ты плетёшь дни из смеха и гармонии, где каждый миг — праздник души.”,destiny:“Твои улыбки разлетятся, как семена, расцветая в сердцах других.”},“Хагалаз”:{essence:“Буря, что разрывает ткани реальности, очищая путь для неведомого — твоя внутренняя стихия, сеющая хаос ради рождения.”,personality:“Ты становишься вихрем, сметающим отжившее, где каждый кризис — дверь в новое.”,destiny:“Твои бури станут легендами, что смели старые миры, оставив землю, готовую к свежим семенам.”},“Наутиз”:{essence:“Тени нужды и ограничений окутывают тебя с рождения, превращая давление в алмаз, закалённый в тисках судьбы.”,personality:“Ты идёшь тропой терпения, где каждый шаг под гнётом рождает силу, а нужда становится учителем.”,destiny:“Твои испытания разожгут огонь стойкости в других, оставив эхо мудрости, выкованной в огне ограничений.”},“Иса”:{essence:“Лёд, что сковывает реки, хранит в себе тишину ожиданий, готовую к пробуждению в нужный миг.”,personality:“Ты замираешь в паузе, где время кристаллизуется, давая ясность мыслям и силы для точного удара.”,destiny:“Твоя тишина станет убежищем для бурь мира, эхом, что учит ценить покой перед бурей.”},“Йера”:{essence:“Круги времени вертятся вокруг тебя, обещая урожай после сева, в ритме сезонов и циклов жизни.”,personality:“Ты плетёшь нити терпения, где труд медленно зреет, превращая семена в золотые плоды.”,destiny:“Твои циклы станут уроком для мира, оставив следы стабильности, что питают будущие поколения.”},“Эйваз”:{essence:“Ветви дерева миров тянутся через тебя, соединяя глубины земли с высотами небес в едином дыхании.”,personality:“Ты переходишь грани, где шаманские тропы ведут к слиянию реальностей, открывая двери невидимого.”,destiny:“Твои мосты станут путями для странников, эхом связи, что объединяет разрозненное в целое.”},“Перт”:{essence:“Колодец тайн прячется в твоей глубине, полный древних вод, что шепчут о скрытых сокровищах.”,personality:“Ты ныряешь в завесы интуиции, где гадания и рождения раскрывают невидимое в повседневном.”,destiny:“Твои загадки станут легендами, манящими искателей к глубинам, что ты открыл.”},“Альгиз”:{essence:“Ветви охраны раскидываются над тобой, связывая с силами, что отводят тени и бурю.”,personality:“Ты стоишь как страж, где молитвы и помощь другим становятся твоим доспехом в потоке жизни.”,destiny:“Твоя защита станет убежищем, эхом, что охраняет души в мире хаоса.”},“Соулу”:{essence:“Солнце разгорается в твоей груди, неся энергию, что рассеивает мрак и дарит тепло.”,personality:“Ты ведёшь через свет, где лидерство и вдохновение зажигают пути в темноте.”,destiny:“Твои лучи станут вечным огнём, освещающим дороги для тех, кто следует за тобой.”},“Тейваз”:{essence:“Стрелка истины всегда указывает направление, ведя тебя через туман к чести и правде.”,personality:“Ты сражаешься за честь, где битвы становятся полотном для картин справедливости.”,destiny:“Твои дела станут маяком, что направляет других к истине в мире лжи.”},“Беркана”:{essence:“Рост течёт через тебя, как река, что питает землю, рождая жизнь из семян.”,personality:“Ты заботишься, где любовь и творчество расцветают, превращая пустоту в сад.”,destiny:“Твои корни станут лесом, дающим тень и плоды для будущих путников.”},“Эваз”:{essence:“Дуэт гармонии звучит в тебе, где два пути сливаются в один поток движения.”,personality:“Ты мчишься в паре, где доверие превращает одиночество в совместный полёт.”,destiny:“Твои союзы станут легендами, что связывают сердца в вечном ритме.”},“Манназ”:{essence:“Зеркало души отражает в тебе суть человечности, полную глубин и отражений.”,personality:“Ты познаёшь через встречи, где общество становится зеркалом для самооткрытия.”,destiny:“Твои уроки станут компасом, ведущим других к пониманию себя.”},“Лагуз”:{essence:“Вы человек, который живет в потоке жизни и прислушивается к своим ощущениям, умеете адаптироваться к переменам.”,personality:“В мире чаще всего вы проявляетесь как чуткий и внимательный человек, который умеет подстраиваться под людей и обстоятельства.”,destiny:“Ваше наследие — помогать себе и другим продвигаться вперед, используя возможности, которые появляются.”},“Ингуз”:{essence:“Вы человек, который любит доводить дела до конца и видеть результаты своих действий.”,personality:“Снаружи вы проявляетесь как активный и надежный человек, который умеет брать инициативу.”,destiny:“Ваше наследие — создавать новые возможности, которые приносят пользу вам и окружающим.”},“Отал”:{essence:“По своей природе вы человек, для которого важны стабильность, свои корни и чувство опоры в жизни.”,personality:“Внешне вы проявляетесь как человек надежный, собранный, умеющий держать границы.”,destiny:“Ваше наследие связано с темой рода, дома и сохранения ценностей.”},“Дагаз”:{essence:“В основе вашей природы заложена энергия перемен и обновления. Вы внутренне стремитесь к развитию.”,personality:“В поведении вы проявляетесь как человек, который легко принимает перемены и способен быстро перестраиваться.”,destiny:“Ваше наследие связано со способностью начинать новые этапы и обновлять жизненные процессы.”}};
+const maps={ru:{‘а’:1,‘б’:2,‘в’:3,‘г’:4,‘д’:5,‘е’:6,‘ё’:7,‘ж’:8,‘з’:9,‘и’:1,‘й’:2,‘к’:3,‘л’:4,‘м’:5,‘н’:6,‘о’:7,‘п’:8,‘р’:9,‘с’:1,‘т’:2,‘у’:3,‘ф’:4,‘х’:5,‘ц’:6,‘ч’:7,‘ш’:8,‘щ’:9,‘ъ’:1,‘ы’:2,‘ь’:3,‘э’:4,‘ю’:5,‘я’:6},en:{‘a’:1,‘b’:2,‘c’:3,‘d’:4,‘e’:5,‘f’:6,‘g’:7,‘h’:8,‘i’:9,‘j’:1,‘k’:2,‘l’:3,‘m’:4,‘n’:5,‘o’:6,‘p’:7,‘q’:8,‘r’:9,‘s’:1,‘t’:2,‘u’:3,‘v’:4,‘w’:5,‘x’:6,‘y’:7,‘z’:8}};
 function cV(ch,l){return maps[l][ch.toLowerCase()]||0}
 function sS(s,l){var t=0;for(var i=0;i<s.length;i++)if(/[а-яёa-z]/i.test(s[i]))t+=cV(s[i],l);return t}
 function dr(n){if(n<=0)return 9;var r=n%9;return r||9}
 function at(d){var m=d%3;return m||3}
 function mj(a){var cnt={1:0,2:0,3:0};a.forEach(function(x){if(x>=1&&x<=3)cnt[x]++;});var mx=Math.max(cnt[1],cnt[2],cnt[3]);if(mx<2)return null;for(var k=1;k<=3;k++)if(cnt[k]===mx)return k;return null}
-function rn(g,a){if(g===9)return"Вирд";var i=(a-1)*8+g;return(i>=1&&i<=24)?runes[i]:"—"}
+function rn(g,a){if(g===9)return”Вирд”;var i=(a-1)*8+g;return(i>=1&&i<=24)?runes[i]:”—”}
 
 function calc(){
-  document.getElementById("error").style.display="none";
-  document.getElementById("result").style.display="none";
-  try{
-    var lg=document.getElementById("lang").value;
-    var sn=document.getElementById("surname").value.trim();
-    var nm=document.getElementById("name").value.trim();
-    var pt=document.getElementById("patr").value.trim();
-    var db=document.getElementById("dob").value;
-    if(!sn||!nm||!db)return;
-    var parts=db.split("-");
-    var y=parts[0],m=parts[1],d=parts[2];
-    var sd=0;for(var i=0;i<d.length;i++)sd+=parseInt(d[i])||0;
-    var sm=0;for(var i=0;i<m.length;i++)sm+=parseInt(m[i])||0;
-    var sy=0;for(var i=0;i<y.length;i++)sy+=parseInt(y[i])||0;
-    var gb=dr(sd+sm+sy),drd=dr(sd),drm=dr(sm),dry=dr(sy);
-    var ab=mj([at(drd),at(drm),at(dry)])||at(gb);
-    var re=rn(gb,ab);
-    var ss=sS(sn,lg),snm=sS(nm,lg),sp=sS(pt,lg);
-    var gp=dr(ss+snm+sp),drs=dr(ss),drn=dr(snm),drp=dr(sp);
-    var ap=mj([at(drs),at(drn),at(drp)])||at(gp);
-    var rp=rn(gp,ap);
-    var gg=dr(gb+gp);
-    var ag=mj([at(dr(drd+drn)),at(dr(drm+drp)),at(dr(dry+drs))])||at(gg);
-    var rd=rn(gg,ag);
-    var sym=function(r){return RS[r]||"";};
-    [["re",re],["rp",rp],["rd",rd]].forEach(function(pair){
-      document.getElementById(pair[0]).textContent=pair[1];
-      document.getElementById(pair[0]+"2").textContent=pair[1];
-    });
-    [["symE",re],["symP",rp],["symD",rd]].forEach(function(pair){
-      document.getElementById(pair[0]).textContent=sym(pair[1]);
-      document.getElementById(pair[0]+"2").textContent=sym(pair[1]);
-    });
-    document.getElementById("descE").textContent=D[re]?D[re].essence:"";
-    document.getElementById("descP").textContent=D[rp]?D[rp].personality:"";
-    document.getElementById("descD").textContent=D[rd]?D[rd].destiny:"";
-    document.getElementById("result").style.display="block";
-    document.getElementById("result").scrollIntoView({behavior:"smooth",block:"nearest"});
-  }catch(e){document.getElementById("error").style.display="block";}
+document.getElementById(“error”).style.display=“none”;
+document.getElementById(“result”).style.display=“none”;
+try{
+var lg=document.getElementById(“lang”).value;
+var sn=document.getElementById(“surname”).value.trim();
+var nm=document.getElementById(“name”).value.trim();
+var pt=document.getElementById(“patr”).value.trim();
+var db=document.getElementById(“dob”).value;
+if(!sn||!nm||!db)return;
+var parts=db.split(”-”);
+var y=parts[0],m=parts[1],d=parts[2];
+var sd=0;for(var i=0;i<d.length;i++)sd+=parseInt(d[i])||0;
+var sm=0;for(var i=0;i<m.length;i++)sm+=parseInt(m[i])||0;
+var sy=0;for(var i=0;i<y.length;i++)sy+=parseInt(y[i])||0;
+var gb=dr(sd+sm+sy),drd=dr(sd),drm=dr(sm),dry=dr(sy);
+var ab=mj([at(drd),at(drm),at(dry)])||at(gb);
+var re=rn(gb,ab);
+var ss=sS(sn,lg),snm=sS(nm,lg),sp=sS(pt,lg);
+var gp=dr(ss+snm+sp),drs=dr(ss),drn=dr(snm),drp=dr(sp);
+var ap=mj([at(drs),at(drn),at(drp)])||at(gp);
+var rp=rn(gp,ap);
+var gg=dr(gb+gp);
+var ag=mj([at(dr(drd+drn)),at(dr(drm+drp)),at(dr(dry+drs))])||at(gg);
+var rd=rn(gg,ag);
+var sym=function(r){return RS[r]||””;};
+[[“re”,re],[“rp”,rp],[“rd”,rd]].forEach(function(pair){
+document.getElementById(pair[0]).textContent=pair[1];
+document.getElementById(pair[0]+“2”).textContent=pair[1];
+});
+[[“symE”,re],[“symP”,rp],[“symD”,rd]].forEach(function(pair){
+document.getElementById(pair[0]).textContent=sym(pair[1]);
+document.getElementById(pair[0]+“2”).textContent=sym(pair[1]);
+});
+document.getElementById(“descE”).textContent=D[re]?D[re].essence:””;
+document.getElementById(“descP”).textContent=D[rp]?D[rp].personality:””;
+document.getElementById(“descD”).textContent=D[rd]?D[rd].destiny:””;
+document.getElementById(“result”).style.display=“block”;
+document.getElementById(“result”).scrollIntoView({behavior:“smooth”,block:“nearest”});
+}catch(e){document.getElementById(“error”).style.display=“block”;}
 }
 
-document.getElementById("btn").addEventListener("click", calc);
+document.getElementById(“btn”).addEventListener(“click”, calc);
 
 /* ══ FORM PERSISTENCE ══ */
-var _fields=["surname","name","patr","dob"];
-_fields.forEach(function(id){
-  var el=document.getElementById(id);
-  if(!el)return;
-  var saved=sessionStorage.getItem("irk_"+id);
-  if(saved)el.value=saved;
-  el.addEventListener("input",function(){sessionStorage.setItem("irk_"+id,el.value);});
-  el.addEventListener("change",function(){sessionStorage.setItem("irk_"+id,el.value);});
+var *fields=[“surname”,“name”,“patr”,“dob”];
+*fields.forEach(function(id){
+var el=document.getElementById(id);
+if(!el)return;
+var saved=sessionStorage.getItem(“irk*”+id);
+if(saved)el.value=saved;
+el.addEventListener(“input”,function(){sessionStorage.setItem(“irk*”+id,el.value);});
+el.addEventListener(“change”,function(){sessionStorage.setItem(“irk_”+id,el.value);});
 });
 
 /* ══ SCROLL REVEAL ══ */
 var obs=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");obs.unobserve(e.target);}});
+entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add(“visible”);obs.unobserve(e.target);}});
 },{threshold:0.08});
-document.querySelectorAll(".reveal").forEach(function(el){obs.observe(el);});
+document.querySelectorAll(”.reveal”).forEach(function(el){obs.observe(el);});
 
 /* ══ MATRIX ══ */
 function initMatrix(canvas){
-  var ctx=canvas.getContext("2d");
-  var chars="ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛋᛏᛒᛖᛗᛚᛜᛟᛞ01".split("");
-  var SZ=22;
-  var cols,drops;
-  function resize(){
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
-    cols=Math.floor(canvas.width/SZ);
-    drops=[];
-    for(var i=0;i<cols;i++)drops.push(-(Math.random()*60+20));
-  }
-  resize();
-  window.addEventListener("resize",resize);
-  var lastTime=0;
-  function draw(ts){
-    requestAnimationFrame(draw);
-    if(ts-lastTime<60)return;
-    lastTime=ts;
-    ctx.fillStyle="rgba(0,0,0,0.06)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.font="bold "+SZ+"px 'Share Tech Mono',monospace";
-    for(var i=0;i<cols;i++){
-      var y=drops[i]*SZ,x=i*SZ;
-      var ch=chars[Math.floor(Math.random()*chars.length)];
-      ctx.fillStyle="#e8fff0";ctx.fillText(ch,x,y);
-      if(y>SZ){ctx.fillStyle="#00ff41";ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ);}
-      if(y>SZ*2){ctx.fillStyle="rgba(0,210,55,0.5)";ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*2);}
-      if(y>SZ*4){ctx.fillStyle="rgba(0,140,35,0.25)";ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*4);}
-      if(y>canvas.height&&Math.random()>0.985)drops[i]=-(Math.random()*20+5);
-      drops[i]+=0.23;
-    }
-  }
-  // Fill black immediately to prevent transparent/colored bg on first frame
-  ctx.fillStyle="#000000";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  requestAnimationFrame(draw);
-  document.addEventListener("visibilitychange",function(){if(!document.hidden)lastTime=0;});
+var ctx=canvas.getContext(“2d”);
+var chars=“ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛋᛏᛒᛖᛗᛚᛜᛟᛞ01”.split(””);
+var SZ=22;
+var cols,drops;
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+cols=Math.floor(canvas.width/SZ);
+drops=[];
+for(var i=0;i<cols;i++)drops.push(-(Math.random()*60+20));
+}
+resize();
+window.addEventListener(“resize”,resize);
+var lastTime=0;
+function draw(ts){
+requestAnimationFrame(draw);
+if(ts-lastTime<60)return;
+lastTime=ts;
+ctx.fillStyle=“rgba(0,0,0,0.08)”;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.font=“bold “+SZ+“px ‘Share Tech Mono’,monospace”;
+for(var i=0;i<cols;i++){
+var y=drops[i]*SZ,x=i*SZ;
+var ch=chars[Math.floor(Math.random()*chars.length)];
+ctx.fillStyle=”#e8fff0”;ctx.fillText(ch,x,y);
+if(y>SZ){ctx.fillStyle=”#00ff41”;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ);}
+if(y>SZ*2){ctx.fillStyle=“rgba(0,210,55,0.5)”;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*2);}
+if(y>SZ*4){ctx.fillStyle=“rgba(0,140,35,0.25)”;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*4);}
+if(y>canvas.height&&Math.random()>0.985)drops[i]=-(Math.random()*20+5);
+drops[i]+=0.23;
+}
+}
+// Fill black immediately to prevent transparent/colored bg on first frame
+ctx.fillStyle=”#000000”;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+requestAnimationFrame(draw);
+document.addEventListener(“visibilitychange”,function(){if(!document.hidden)lastTime=0;});
 }
 
 /* ══ LOADER ══ */
 var LINES=[
-  {t:200,  text:"> инициализация рунического протокола"},
-  {t:1000, text:"> загрузка Старшего Футарка [25 рун]"},
-  {t:1900, text:"> подключение нумерологической матрицы"},
-  {t:2800, text:"> калибровка аттов и позиций"},
-  {t:3700, text:"> система готова к расчёту ИРК",last:true},
+{t:200,  text:”> инициализация рунического протокола”},
+{t:1000, text:”> загрузка Старшего Футарка [25 рун]”},
+{t:1900, text:”> подключение нумерологической матрицы”},
+{t:2800, text:”> калибровка аттов и позиций”},
+{t:3700, text:”> система готова к расчёту ИРК”,last:true},
 ];
 var REVEAL_AT=5800;
-var linesEl=document.getElementById("loaderLines");
-var bar=document.getElementById("progressBar");
-var pct=document.getElementById("progressPct");
+var linesEl=document.getElementById(“loaderLines”);
+var bar=document.getElementById(“progressBar”);
+var pct=document.getElementById(“progressPct”);
 
 function typeWriter(el,text,cb){
-  var i=0;el.textContent="";
-  var iv=setInterval(function(){
-    el.innerHTML+=text[i];i++;
-    if(i>=text.length){clearInterval(iv);if(cb)cb();}
-  },28);
+var i=0;el.textContent=””;
+var iv=setInterval(function(){
+el.innerHTML+=text[i];i++;
+if(i>=text.length){clearInterval(iv);if(cb)cb();}
+},28);
 }
 
 LINES.forEach(function(item){
-  setTimeout(function(){
-    var span=document.createElement("span");
-    span.className="line";
-    linesEl.appendChild(span);
-    typeWriter(span,item.text,item.last?function(){
-      setTimeout(function(){
-        var d1=document.createElement("span");
-        d1.style.fontFamily="'Share Tech Mono',monospace";
-        d1.textContent=" ."; span.appendChild(d1);
-      }, 200);
-      setTimeout(function(){
-        var d2=document.createElement("span");
-        d2.style.fontFamily="'Share Tech Mono',monospace";
-        d2.textContent=" ."; span.appendChild(d2);
-      }, 300);
-      setTimeout(function(){
-        var cur=document.createElement("span");
-        cur.className="lc";
-        cur.style.fontFamily="'Share Tech Mono',monospace";
-        cur.textContent=" █"; span.appendChild(cur);
-      }, 400);
-    }:null);
-  },item.t);
+setTimeout(function(){
+var span=document.createElement(“span”);
+span.className=“line”;
+linesEl.appendChild(span);
+typeWriter(span,item.text,item.last?function(){
+setTimeout(function(){
+var d1=document.createElement(“span”);
+d1.style.fontFamily=”‘Share Tech Mono’,monospace”;
+d1.textContent=” .”; span.appendChild(d1);
+}, 200);
+setTimeout(function(){
+var d2=document.createElement(“span”);
+d2.style.fontFamily=”‘Share Tech Mono’,monospace”;
+d2.textContent=” .”; span.appendChild(d2);
+}, 300);
+setTimeout(function(){
+var cur=document.createElement(“span”);
+cur.className=“lc”;
+cur.style.fontFamily=”‘Share Tech Mono’,monospace”;
+cur.textContent=” █”; span.appendChild(cur);
+}, 400);
+}:null);
+},item.t);
 });
 
 var startTime=Date.now();
 var targetMs=REVEAL_AT-800;
 var timerIv=setInterval(function(){
-  var elapsed=Date.now()-startTime;
-  var t=Math.min(elapsed/targetMs,1);
-  var eased=1-Math.pow(1-t,2);
-  var progress=Math.floor(eased*99);
-  bar.style.width=progress+"%";
-  pct.textContent=progress+"%";
-  if(t>=1)clearInterval(timerIv);
+var elapsed=Date.now()-startTime;
+var t=Math.min(elapsed/targetMs,1);
+var eased=1-Math.pow(1-t,2);
+var progress=Math.floor(eased*99);
+bar.style.width=progress+”%”;
+pct.textContent=progress+”%”;
+if(t>=1)clearInterval(timerIv);
 },30);
 
 setTimeout(function(){
-  bar.style.width="100%";
-  pct.textContent="100%";
-  setTimeout(function(){
-    var loader=document.getElementById("loader");
-    loader.style.transition="opacity .6s ease";
-    loader.style.opacity="0";
-    var canvas=document.getElementById("matrix-canvas");
-    canvas.style.display="block";
-    initMatrix(canvas);
-    setTimeout(function(){
-      loader.style.display="none";
-      document.getElementById("main").classList.add("visible");
-    },650);
-  },400);
+bar.style.width=“100%”;
+pct.textContent=“100%”;
+setTimeout(function(){
+var loader=document.getElementById(“loader”);
+loader.style.transition=“opacity .6s ease”;
+loader.style.opacity=“0”;
+var canvas=document.getElementById(“matrix-canvas”);
+canvas.style.display=“block”;
+initMatrix(canvas);
+setTimeout(function(){
+loader.style.display=“none”;
+document.getElementById(“main”).classList.add(“visible”);
+},650);
+},400);
 },REVEAL_AT);
 
-  }
-  if(document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+}
+if(document.readyState === “loading”) {
+document.addEventListener(“DOMContentLoaded”, init);
+} else {
+init();
+}
 })();
 </script>
+
 </body>
 </html>
