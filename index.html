@@ -3,18 +3,14 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Cinzel:wght@400;700;900&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Cinzel:wght@400;700;900&display=swap"></noscript>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Расчёт ИРК от Таши Йотунхейм</title>
 <style>
-
-:root{–green:#00ff41;–green-dim:#00cc35;}
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Cinzel:wght@400;700;900&display=swap');
+:root{--green:#00ff41;--green-dim:#00cc35;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:hidden;max-width:100%;-webkit-overflow-scrolling:touch;background:#000}
-body{color:var(–green);font-family:‘Share Tech Mono’,monospace}
+body{color:var(--green);font-family:'Share Tech Mono',monospace}
 
 /* ══════════════════════════
 LOADER
@@ -490,7 +486,8 @@ background:rgba(0,0,0,0.7);
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-document.addEventListener(“DOMContentLoaded”, function() {
+(function() {
+function init() {
 
 /* ══ IRK CALC ══ */
 const runes=[“Вирд”,“Феху”,“Уруз”,“Турисаз”,“Ансуз”,“Райдо”,“Кеназ”,“Гебо”,“Вуньо”,“Хагалаз”,“Наутиз”,“Иса”,“Йера”,“Эйваз”,“Перт”,“Альгиз”,“Соулу”,“Тейваз”,“Беркана”,“Эваз”,“Манназ”,“Лагуз”,“Ингуз”,“Отал”,“Дагаз”];
@@ -606,7 +603,7 @@ document.addEventListener(“visibilitychange”,function(){if(!document.hidden)
 /* ══ LOADER ══ */
 var LINES=[
 {t:200,  text:”> инициализация рунического протокола”},
-{t:1000, text:”> загрузка Старшего Футарка”},
+{t:1000, text:”> загрузка Старшего Футарка [25 рун]”},
 {t:1900, text:”> подключение нумерологической матрицы”},
 {t:2800, text:”> калибровка аттов и позиций”},
 {t:3700, text:”> система готова к расчёту ИРК”,last:true},
@@ -679,7 +676,13 @@ document.getElementById(“main”).classList.add(“visible”);
 },400);
 },REVEAL_AT);
 
-}); // end DOMContentLoaded
+}
+if(document.readyState === “loading”) {
+document.addEventListener(“DOMContentLoaded”, init);
+} else {
+init();
+}
+})();
 </script>
 
 </body>
