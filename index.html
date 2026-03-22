@@ -79,12 +79,6 @@ font-family:‘VT323’,monospace;
 font-size:18px;letter-spacing:4px;
 color:var(–green);
 }
-
-.loader-dots{display:inline}
-.ld{animation:ld-blink 1.2s step-end infinite}
-.ld:nth-child(2){animation-delay:.4s}
-.lc{animation:blink .8s step-end infinite;color:var(–green)}
-
 .loader-cursor{
 display:inline-block;width:8px;height:14px;
 background:var(–green);
@@ -170,6 +164,9 @@ display:inline-block;width:9px;height:15px;background:var(–green);
 animation:blink 1s step-end infinite;vertical-align:middle;
 box-shadow:0 0 8px var(–green);flex-shrink:0;
 }
+.loader-dots{display:inline}
+.ld{}
+.lc{animation:blink 1s step-end infinite;color:var(–green)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
 .hero-title{
@@ -358,7 +355,7 @@ position:relative;z-index:1;padding:28px 24px;text-align:center;
 border-top:1px solid rgba(0,255,65,0.08);
 background:rgba(0,0,0,0.7);
 }
-.footer-runes{font-family:‘VT323’,monospace;font-size:18px;letter-spacing:5px;color:rgba(0,255,65,0.2);margin-bottom:8px;text-align:center;word-break:break-all}
+.footer-runes{font-family:‘VT323’,monospace;font-size:18px;letter-spacing:5px;color:rgba(0,255,65,0.2);margin-bottom:8px}
 .footer-copy{font-size:10px;letter-spacing:3px;color:rgba(0,255,65,0.35);text-transform:uppercase}
 </style>
 
@@ -480,7 +477,7 @@ background:rgba(0,0,0,0.7);
   &#9608; Таша Йотунхейм &nbsp;·&nbsp; Индивидуальный Рунический Код &nbsp;·&nbsp; &#9608;<br>
   <span style="color:rgba(0,255,65,0.22);font-size:9px;letter-spacing:2px">
     ИП Йотунхейм Таша Владимировна &nbsp;·&nbsp; ИНН 500908132894 &nbsp;·&nbsp; ОГРНИП 323508100430951<br>
-    Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a6f2c7d5cec788ecc9d2d3c8cec3cfcbe6cbc7cfca88d4d3">[email&#160;protected]</a>
+    Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="346055475c551a7e5b40415a5c515d597459555d581a4641">[email&#160;protected]</a>
   </span>
 </div>
 </footer>
@@ -489,327 +486,197 @@ background:rgba(0,0,0,0.7);
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
-document.addEventListener(‘DOMContentLoaded’, function() {
+document.addEventListener(“DOMContentLoaded”, function() {
 
 /* ══ IRK CALC ══ */
 const runes=[“Вирд”,“Феху”,“Уруз”,“Турисаз”,“Ансуз”,“Райдо”,“Кеназ”,“Гебо”,“Вуньо”,“Хагалаз”,“Наутиз”,“Иса”,“Йера”,“Эйваз”,“Перт”,“Альгиз”,“Соулу”,“Тейваз”,“Беркана”,“Эваз”,“Манназ”,“Лагуз”,“Ингуз”,“Отал”,“Дагаз”];
 const RS={“Вирд”:“□”,“Феху”:“ᚠ”,“Уруз”:“ᚢ”,“Турисаз”:“ᚦ”,“Ансуз”:“ᚨ”,“Райдо”:“ᚱ”,“Кеназ”:“ᚲ”,“Гебо”:“ᚷ”,“Вуньо”:“ᚹ”,“Хагалаз”:“ᚺ”,“Наутиз”:“ᚾ”,“Иса”:“ᛁ”,“Йера”:“ᛃ”,“Эйваз”:“ᛇ”,“Перт”:“ᛈ”,“Альгиз”:“ᛉ”,“Соулу”:“ᛋ”,“Тейваз”:“ᛏ”,“Беркана”:“ᛒ”,“Эваз”:“ᛖ”,“Манназ”:“ᛗ”,“Лагуз”:“ᛚ”,“Ингуз”:“ᛜ”,“Отал”:“ᛟ”,“Дагаз”:“ᛞ”};
 const D={“Вирд”:{essence:“Ты приходишь в этот мир без груза предыдущих жизней. Никаких долгов или готовых путей. Это полная свобода, где каждый шаг творит твою реальность.”,personality:“Жизнь для тебя — открытая книга, где страницы пусты. Ты сам рисуешь сюжет, но иногда ветер перелистывает их хаотично, если не ловить нить повествования.”,destiny:“В конце пути мир увидит историю, написанную одной рукой. Никаких древних пророчеств, только эхо твоих выборов, разнесённое ветром.”},“Феху”:{essence:“С рождения ты магнит для потоков, где вещи и возможности стекаются, словно река к морю.”,personality:“Ты плетёшь сети из сделок и обменов, где каждый узел — шанс превратить искру в пламя достатка.”,destiny:“Мир запомнит тебя как того, кто превращал пустыню в сад, оставляя следы изобилия для странников.”},“Уруз”:{essence:“В тебе бьёт ключом первозданная мощь, как река, что пробивает скалы, не зная усталости.”,personality:“Ты идёшь сквозь бури, где тело становится молотом, а воля — наковальней, куя победу из усилий.”,destiny:“В легендах ты станешь горой, что не сломалась, и эхом, что будит силу в тех, кто слышит.”},“Турисаз”:{essence:“Тебя окружают невидимые шипы, где каждый удар возвращается бумерангом, охраняя твою суть от чужой тени.”,personality:“Ты входишь в битвы, где ярость превращается в меч, а решимость — в щит, рассекая стены судьбы.”,destiny:“В сказаниях ты останешься стражем, чьи следы — разрушенные преграды, открывающие дороги для других.”},“Ансуз”:{essence:“Слово в тебе — как ветер, несущий шёпот богов, раскрывающий двери к скрытым знаниям.”,personality:“Ты ткёшь нити разговоров, где голос становится ключом, отпирающим сердца и умы.”,destiny:“Мир унесёт твои слова как семена, что прорастут в умах, меняя ход историй.”},“Райдо”:{essence:“Ты рождаешься с компасом внутри, где каждый шаг — часть вечного странствия, ведущего сквозь горизонты.”,personality:“Ты мчишься по тропам перемен, где ветер в спине, а мир раскрывается, как карта сокровищ.”,destiny:“В воспоминаниях ты станешь странником, чьи пути стали картой для потерянных душ.”},“Кеназ”:{essence:“В тебе тлеет искра, что разгорается в пламя, освещая тени и рождая формы из пустоты.”,personality:“Ты лепишь реальность из огня идей, где каждый всплеск — новый шедевр в хаосе повседневности.”,destiny:“Твои огни будут гореть в ночи, направляя тех, кто ищет свет в темноте.”},“Гебо”:{essence:“Обмен течёт в тебе, как река, где дающее и берущие сливаются в один поток.”,personality:“Ты связываешь нити судеб, где каждый узел — встреча, полная взаимного роста.”,destiny:“В историях ты останешься мостиком, соединившим души в вечном танце.”},“Вуньо”:{essence:“Радость бьёт в тебе ключом, как источник, что питает всё вокруг теплом и светом.”,personality:“Ты плетёшь дни из смеха и гармонии, где каждый миг — праздник души.”,destiny:“Твои улыбки разлетятся, как семена, расцветая в сердцах других.”},“Хагалаз”:{essence:“Буря, что разрывает ткани реальности, очищая путь для неведомого — твоя внутренняя стихия, сеющая хаос ради рождения.”,personality:“Ты становишься вихрем, сметающим отжившее, где каждый кризис — дверь в новое.”,destiny:“Твои бури станут легендами, что смели старые миры, оставив землю, готовую к свежим семенам.”},“Наутиз”:{essence:“Тени нужды и ограничений окутывают тебя с рождения, превращая давление в алмаз, закалённый в тисках судьбы.”,personality:“Ты идёшь тропой терпения, где каждый шаг под гнётом рождает силу, а нужда становится учителем.”,destiny:“Твои испытания разожгут огонь стойкости в других, оставив эхо мудрости, выкованной в огне ограничений.”},“Иса”:{essence:“Лёд, что сковывает реки, хранит в себе тишину ожиданий, готовую к пробуждению в нужный миг.”,personality:“Ты замираешь в паузе, где время кристаллизуется, давая ясность мыслям и силы для точного удара.”,destiny:“Твоя тишина станет убежищем для бурь мира, эхом, что учит ценить покой перед бурей.”},“Йера”:{essence:“Круги времени вертятся вокруг тебя, обещая урожай после сева, в ритме сезонов и циклов жизни.”,personality:“Ты плетёшь нити терпения, где труд медленно зреет, превращая семена в золотые плоды.”,destiny:“Твои циклы станут уроком для мира, оставив следы стабильности, что питают будущие поколения.”},“Эйваз”:{essence:“Ветви дерева миров тянутся через тебя, соединяя глубины земли с высотами небес в едином дыхании.”,personality:“Ты переходишь грани, где шаманские тропы ведут к слиянию реальностей, открывая двери невидимого.”,destiny:“Твои мосты станут путями для странников, эхом связи, что объединяет разрозненное в целое.”},“Перт”:{essence:“Колодец тайн прячется в твоей глубине, полный древних вод, что шепчут о скрытых сокровищах.”,personality:“Ты ныряешь в завесы интуиции, где гадания и рождения раскрывают невидимое в повседневном.”,destiny:“Твои загадки станут легендами, манящими искателей к глубинам, что ты открыл.”},“Альгиз”:{essence:“Ветви охраны раскидываются над тобой, связывая с силами, что отводят тени и бурю.”,personality:“Ты стоишь как страж, где молитвы и помощь другим становятся твоим доспехом в потоке жизни.”,destiny:“Твоя защита станет убежищем, эхом, что охраняет души в мире хаоса.”},“Соулу”:{essence:“Солнце разгорается в твоей груди, неся энергию, что рассеивает мрак и дарит тепло.”,personality:“Ты ведёшь через свет, где лидерство и вдохновение зажигают пути в темноте.”,destiny:“Твои лучи станут вечным огнём, освещающим дороги для тех, кто следует за тобой.”},“Тейваз”:{essence:“Стрелка истины всегда указывает направление, ведя тебя через туман к чести и правде.”,personality:“Ты сражаешься за честь, где битвы становятся полотном для картин справедливости.”,destiny:“Твои дела станут маяком, что направляет других к истине в мире лжи.”},“Беркана”:{essence:“Рост течёт через тебя, как река, что питает землю, рождая жизнь из семян.”,personality:“Ты заботишься, где любовь и творчество расцветают, превращая пустоту в сад.”,destiny:“Твои корни станут лесом, дающим тень и плоды для будущих путников.”},“Эваз”:{essence:“Дуэт гармонии звучит в тебе, где два пути сливаются в один поток движения.”,personality:“Ты мчишься в паре, где доверие превращает одиночество в совместный полёт.”,destiny:“Твои союзы станут легендами, что связывают сердца в вечном ритме.”},“Манназ”:{essence:“Зеркало души отражает в тебе суть человечности, полную глубин и отражений.”,personality:“Ты познаёшь через встречи, где общество становится зеркалом для самооткрытия.”,destiny:“Твои уроки станут компасом, ведущим других к пониманию себя.”},“Лагуз”:{essence:“Вы человек, который живет в потоке жизни и прислушивается к своим ощущениям, умеете адаптироваться к переменам.”,personality:“В мире чаще всего вы проявляетесь как чуткий и внимательный человек, который умеет подстраиваться под людей и обстоятельства.”,destiny:“Ваше наследие — помогать себе и другим продвигаться вперед, используя возможности, которые появляются.”},“Ингуз”:{essence:“Вы человек, который любит доводить дела до конца и видеть результаты своих действий.”,personality:“Снаружи вы проявляетесь как активный и надежный человек, который умеет брать инициативу.”,destiny:“Ваше наследие — создавать новые возможности, которые приносят пользу вам и окружающим.”},“Отал”:{essence:“По своей природе вы человек, для которого важны стабильность, свои корни и чувство опоры в жизни.”,personality:“Внешне вы проявляетесь как человек надежный, собранный, умеющий держать границы.”,destiny:“Ваше наследие связано с темой рода, дома и сохранения ценностей.”},“Дагаз”:{essence:“В основе вашей природы заложена энергия перемен и обновления. Вы внутренне стремитесь к развитию.”,personality:“В поведении вы проявляетесь как человек, который легко принимает перемены и способен быстро перестраиваться.”,destiny:“Ваше наследие связано со способностью начинать новые этапы и обновлять жизненные процессы.”}};
 const maps={ru:{‘а’:1,‘б’:2,‘в’:3,‘г’:4,‘д’:5,‘е’:6,‘ё’:7,‘ж’:8,‘з’:9,‘и’:1,‘й’:2,‘к’:3,‘л’:4,‘м’:5,‘н’:6,‘о’:7,‘п’:8,‘р’:9,‘с’:1,‘т’:2,‘у’:3,‘ф’:4,‘х’:5,‘ц’:6,‘ч’:7,‘ш’:8,‘щ’:9,‘ъ’:1,‘ы’:2,‘ь’:3,‘э’:4,‘ю’:5,‘я’:6},en:{‘a’:1,‘b’:2,‘c’:3,‘d’:4,‘e’:5,‘f’:6,‘g’:7,‘h’:8,‘i’:9,‘j’:1,‘k’:2,‘l’:3,‘m’:4,‘n’:5,‘o’:6,‘p’:7,‘q’:8,‘r’:9,‘s’:1,‘t’:2,‘u’:3,‘v’:4,‘w’:5,‘x’:6,‘y’:7,‘z’:8}};
-function cV(c,l){return maps[l][c.toLowerCase()]||0}
-function sS(s,l){let t=0;for(let c of s)if(/[а-яёa-z]/i.test(c))t+=cV(c,l);return t}
-function dr(n){if(n<=0)return 9;let r=n%9;return r||9}
-function at(d){let m=d%3;return m||3}
-function mj(a){let c={1:0,2:0,3:0};a.forEach(x=>{if(x>=1&&x<=3)c[x]++});let mx=Math.max(c[1],c[2],c[3]);if(mx<2)return null;for(let k=1;k<=3;k++)if(c[k]===mx)return k;return null}
-function rn(g,a){if(g===9)return”Вирд”;let i=(a-1)*8+g;return(i>=1&&i<=24)?runes[i]:”—”}
+function cV(ch,l){return maps[l][ch.toLowerCase()]||0}
+function sS(s,l){var t=0;for(var i=0;i<s.length;i++)if(/[а-яёa-z]/i.test(s[i]))t+=cV(s[i],l);return t}
+function dr(n){if(n<=0)return 9;var r=n%9;return r||9}
+function at(d){var m=d%3;return m||3}
+function mj(a){var cnt={1:0,2:0,3:0};a.forEach(function(x){if(x>=1&&x<=3)cnt[x]++;});var mx=Math.max(cnt[1],cnt[2],cnt[3]);if(mx<2)return null;for(var k=1;k<=3;k++)if(cnt[k]===mx)return k;return null}
+function rn(g,a){if(g===9)return”Вирд”;var i=(a-1)*8+g;return(i>=1&&i<=24)?runes[i]:”—”}
+
 function calc(){
 document.getElementById(“error”).style.display=“none”;
 document.getElementById(“result”).style.display=“none”;
 try{
-let lg=document.getElementById(“lang”).value;
-let sn=document.getElementById(“surname”).value.trim();
-let nm=document.getElementById(“name”).value.trim();
-let pt=document.getElementById(“patr”).value.trim();
-let db=document.getElementById(“dob”).value;
+var lg=document.getElementById(“lang”).value;
+var sn=document.getElementById(“surname”).value.trim();
+var nm=document.getElementById(“name”).value.trim();
+var pt=document.getElementById(“patr”).value.trim();
+var db=document.getElementById(“dob”).value;
 if(!sn||!nm||!db)return;
-let[y,m,d]=db.split(”-”);
-let sd=0;for(let c of d)sd+=+c||0;
-let sm=0;for(let c of m)sm+=+c||0;
-let sy=0;for(let c of y)sy+=+c||0;
-let gb=dr(sd+sm+sy),drd=dr(sd),drm=dr(sm),dry=dr(sy);
-let ab=mj([at(drd),at(drm),at(dry)])||at(gb);
-let re=rn(gb,ab);
-let ss=sS(sn,lg),snm=sS(nm,lg),sp=sS(pt,lg);
-let gp=dr(ss+snm+sp),drs=dr(ss),drn=dr(snm),drp=dr(sp);
-let ap=mj([at(drs),at(drn),at(drp)])||at(gp);
-let rp=rn(gp,ap);
-let gg=dr(gb+gp);
-let ag=mj([at(dr(drd+drn)),at(dr(drm+drp)),at(dr(dry+drs))])||at(gg);
-let rd=rn(gg,ag);
-const sym=r=>RS[r]||””;
-[[“re”,re],[“rp”,rp],[“rd”,rd]].forEach(([id,v])=>{document.getElementById(id).textContent=v;document.getElementById(id+“2”).textContent=v});
-[[“symE”,re],[“symP”,rp],[“symD”,rd]].forEach(([id,v])=>{document.getElementById(id).textContent=sym(v);document.getElementById(id+“2”).textContent=sym(v)});
-document.getElementById(“descE”).textContent=D[re]?.essence||””;
-document.getElementById(“descP”).textContent=D[rp]?.personality||””;
-document.getElementById(“descD”).textContent=D[rd]?.destiny||””;
+var parts=db.split(”-”);
+var y=parts[0],m=parts[1],d=parts[2];
+var sd=0;for(var i=0;i<d.length;i++)sd+=parseInt(d[i])||0;
+var sm=0;for(var i=0;i<m.length;i++)sm+=parseInt(m[i])||0;
+var sy=0;for(var i=0;i<y.length;i++)sy+=parseInt(y[i])||0;
+var gb=dr(sd+sm+sy),drd=dr(sd),drm=dr(sm),dry=dr(sy);
+var ab=mj([at(drd),at(drm),at(dry)])||at(gb);
+var re=rn(gb,ab);
+var ss=sS(sn,lg),snm=sS(nm,lg),sp=sS(pt,lg);
+var gp=dr(ss+snm+sp),drs=dr(ss),drn=dr(snm),drp=dr(sp);
+var ap=mj([at(drs),at(drn),at(drp)])||at(gp);
+var rp=rn(gp,ap);
+var gg=dr(gb+gp);
+var ag=mj([at(dr(drd+drn)),at(dr(drm+drp)),at(dr(dry+drs))])||at(gg);
+var rd=rn(gg,ag);
+var sym=function(r){return RS[r]||””;};
+[[“re”,re],[“rp”,rp],[“rd”,rd]].forEach(function(pair){
+document.getElementById(pair[0]).textContent=pair[1];
+document.getElementById(pair[0]+“2”).textContent=pair[1];
+});
+[[“symE”,re],[“symP”,rp],[“symD”,rd]].forEach(function(pair){
+document.getElementById(pair[0]).textContent=sym(pair[1]);
+document.getElementById(pair[0]+“2”).textContent=sym(pair[1]);
+});
+document.getElementById(“descE”).textContent=D[re]?D[re].essence:””;
+document.getElementById(“descP”).textContent=D[rp]?D[rp].personality:””;
+document.getElementById(“descD”).textContent=D[rd]?D[rd].destiny:””;
 document.getElementById(“result”).style.display=“block”;
 document.getElementById(“result”).scrollIntoView({behavior:“smooth”,block:“nearest”});
-}catch(e){document.getElementById(“error”).style.display=“block”}
+}catch(e){document.getElementById(“error”).style.display=“block”;}
 }
-document.getElementById(‘btn’).addEventListener(‘click’, calc);
+
+document.getElementById(“btn”).addEventListener(“click”, calc);
+
+/* ══ FORM PERSISTENCE ══ */
+var *fields=[“surname”,“name”,“patr”,“dob”];
+*fields.forEach(function(id){
+var el=document.getElementById(id);
+if(!el)return;
+var saved=sessionStorage.getItem(“irk*”+id);
+if(saved)el.value=saved;
+el.addEventListener(“input”,function(){sessionStorage.setItem(“irk*”+id,el.value);});
+el.addEventListener(“change”,function(){sessionStorage.setItem(“irk_”+id,el.value);});
+});
 
 /* ══ SCROLL REVEAL ══ */
-const obs = new IntersectionObserver(entries => {
-entries.forEach(e => { if(e.isIntersecting){e.target.classList.add(‘visible’);obs.unobserve(e.target);}});
-}, {threshold:0.08});
-document.querySelectorAll(’.reveal’).forEach(el => obs.observe(el));
+var obs=new IntersectionObserver(function(entries){
+entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add(“visible”);obs.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll(”.reveal”).forEach(function(el){obs.observe(el);});
 
 /* ══ MATRIX ══ */
-function initMatrix(canvas) {
-const ctx = canvas.getContext(‘2d’);
-const chars = ‘ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛋᛏᛒᛖᛗᛚᛜᛟᛞ01’.split(’’);
-const SZ = 22;
-let cols, drops;
-function resize() {
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-cols = Math.floor(canvas.width / SZ);
-drops = Array(cols).fill(0).map(() => -(Math.random() * 60 + 20));
+function initMatrix(canvas){
+var ctx=canvas.getContext(“2d”);
+var chars=“ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛋᛏᛒᛖᛗᛚᛜᛟᛞ01”.split(””);
+var SZ=22;
+var cols,drops;
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+cols=Math.floor(canvas.width/SZ);
+drops=[];
+for(var i=0;i<cols;i++)drops.push(-(Math.random()*60+20));
 }
 resize();
-window.addEventListener(‘resize’, resize);
-var lastTime = 0;
-var interval = 60; // ms between frames
-function draw(timestamp) {
+window.addEventListener(“resize”,resize);
+var lastTime=0;
+function draw(ts){
 requestAnimationFrame(draw);
-// Prevent matrix reset on iOS when page loses/gains focus
-document.addEventListener(‘visibilitychange’, function() {
-if (!document.hidden) { lastTime = 0; }
-});
-if (timestamp - lastTime < interval) return;
-lastTime = timestamp;
-ctx.fillStyle = ‘rgba(0,0,0,0.045)’;
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.font = ‘bold ’ + SZ + ‘px “Share Tech Mono”,monospace’;
-for (var i = 0; i < cols; i++) {
-var y = drops[i] * SZ, x = i * SZ;
-var ch = chars[Math.floor(Math.random() * chars.length)];
-ctx.fillStyle = ‘#e8fff0’; ctx.fillText(ch, x, y);
-if(y>SZ)   {ctx.fillStyle=’#00ff41’;            ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ)}
-if(y>SZ*2) {ctx.fillStyle=‘rgba(0,210,55,0.5)’; ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*2)}
-if(y>SZ*4) {ctx.fillStyle=‘rgba(0,140,35,0.25)’;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*4)}
-if(y > canvas.height && Math.random() > 0.985) drops[i] = -(Math.random() * 20 + 5);
-drops[i] += 0.23;
+if(ts-lastTime<60)return;
+lastTime=ts;
+ctx.fillStyle=“rgba(0,0,0,0.045)”;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.font=“bold “+SZ+“px ‘Share Tech Mono’,monospace”;
+for(var i=0;i<cols;i++){
+var y=drops[i]*SZ,x=i*SZ;
+var ch=chars[Math.floor(Math.random()*chars.length)];
+ctx.fillStyle=”#e8fff0”;ctx.fillText(ch,x,y);
+if(y>SZ){ctx.fillStyle=”#00ff41”;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ);}
+if(y>SZ*2){ctx.fillStyle=“rgba(0,210,55,0.5)”;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*2);}
+if(y>SZ*4){ctx.fillStyle=“rgba(0,140,35,0.25)”;ctx.fillText(chars[Math.floor(Math.random()*chars.length)],x,y-SZ*4);}
+if(y>canvas.height&&Math.random()>0.985)drops[i]=-(Math.random()*20+5);
+drops[i]+=0.23;
 }
 }
 requestAnimationFrame(draw);
-// Prevent matrix reset on iOS when page loses/gains focus
-document.addEventListener(‘visibilitychange’, function() {
-if (!document.hidden) { lastTime = 0; }
-});
+document.addEventListener(“visibilitychange”,function(){if(!document.hidden)lastTime=0;});
 }
 
 /* ══ LOADER ══ */
-// Lines with typewriter timing — finish well before 5s
-const LINES = [
-{t:200,  text:’> инициализация рунического протокола’},
-{t:1000, text:’> загрузка Старшего Футарка [25 рун]’},
-{t:1900, text:’> подключение нумерологической матрицы’},
-{t:2800, text:’> калибровка аттов и позиций’},
-{t:3700, text:’> система готова к расчёту ИРК’, last:true},
+var LINES=[
+{t:200,  text:”> инициализация рунического протокола”},
+{t:1000, text:”> загрузка Старшего Футарка”},
+{t:1900, text:”> подключение нумерологической матрицы”},
+{t:2800, text:”> калибровка аттов и позиций”},
+{t:3700, text:”> система готова к расчёту ИРК”,last:true},
 ];
-const REVEAL_AT = 5800; // total loader duration ms
+var REVEAL_AT=5800;
+var linesEl=document.getElementById(“loaderLines”);
+var bar=document.getElementById(“progressBar”);
+var pct=document.getElementById(“progressPct”);
 
-const linesEl = document.getElementById(‘loaderLines’);
-const bar     = document.getElementById(‘progressBar’);
-const pct     = document.getElementById(‘progressPct’);
-
-// Typewriter function
-function typeWriter(el, text, cb) {
-var i = 0;
-el.textContent = ‘’;
-var iv = setInterval(function() {
-el.textContent += text[i];
-i++;
-if(i >= text.length) {
-clearInterval(iv);
-if(cb) cb();
-}
-}, 28);
+function typeWriter(el,text,cb){
+var i=0;el.textContent=””;
+var iv=setInterval(function(){
+el.innerHTML+=text[i];i++;
+if(i>=text.length){clearInterval(iv);if(cb)cb();}
+},28);
 }
 
-LINES.forEach(function(item, idx) {
-setTimeout(function() {
-var span = document.createElement(‘span’);
-span.className = ‘line’;
+LINES.forEach(function(item){
+setTimeout(function(){
+var span=document.createElement(“span”);
+span.className=“line”;
 linesEl.appendChild(span);
-typeWriter(span, item.text, item.last ? function() {
-// add blinking dots cursor after last line
-var dots = document.createElement(‘span’);
-dots.className = ‘loader-dots’;
-dots.innerHTML = ’ <span class="ld">.</span><span class="ld">.</span><span class="lc">█</span>’;
-span.appendChild(dots);
-} : null);
-}, item.t);
+typeWriter(span,item.text,item.last?function(){
+setTimeout(function(){
+var d1=document.createElement(“span”);
+d1.style.fontFamily=”‘Share Tech Mono’,monospace”;
+d1.textContent=” .”; span.appendChild(d1);
+}, 200);
+setTimeout(function(){
+var d2=document.createElement(“span”);
+d2.style.fontFamily=”‘Share Tech Mono’,monospace”;
+d2.textContent=” .”; span.appendChild(d2);
+}, 300);
+setTimeout(function(){
+var cur=document.createElement(“span”);
+cur.className=“lc”;
+cur.style.fontFamily=”‘Share Tech Mono’,monospace”;
+cur.textContent=” █”; span.appendChild(cur);
+}, 400);
+}:null);
+},item.t);
 });
 
-// Progress: smooth 0→99 over (REVEAL_AT - 600)ms, then 100 at REVEAL_AT
-var startTime = Date.now();
-var targetMs = REVEAL_AT - 800;
-var timer = setInterval(function() {
-var elapsed = Date.now() - startTime;
-var t = Math.min(elapsed / targetMs, 1);
-// ease-out: fast start, slows near 99
-var eased = 1 - Math.pow(1 - t, 2);
-var progress = Math.floor(eased * 99);
-bar.style.width = progress + ‘%’;
-pct.textContent = progress + ‘%’;
-if(t >= 1) clearInterval(timer);
-}, 30);
+var startTime=Date.now();
+var targetMs=REVEAL_AT-800;
+var timerIv=setInterval(function(){
+var elapsed=Date.now()-startTime;
+var t=Math.min(elapsed/targetMs,1);
+var eased=1-Math.pow(1-t,2);
+var progress=Math.floor(eased*99);
+bar.style.width=progress+”%”;
+pct.textContent=progress+”%”;
+if(t>=1)clearInterval(timerIv);
+},30);
 
-setTimeout(function() {
-bar.style.width = ‘100%’;
-pct.textContent = ‘100%’;
-setTimeout(function() {
-var loader = document.getElementById(‘loader’);
-loader.style.transition = ‘opacity .6s ease’;
-loader.style.opacity = ‘0’;
-var canvas = document.getElementById(‘matrix-canvas’);
-canvas.style.display = ‘block’;
+setTimeout(function(){
+bar.style.width=“100%”;
+pct.textContent=“100%”;
+setTimeout(function(){
+var loader=document.getElementById(“loader”);
+loader.style.transition=“opacity .6s ease”;
+loader.style.opacity=“0”;
+var canvas=document.getElementById(“matrix-canvas”);
+canvas.style.display=“block”;
 initMatrix(canvas);
-setTimeout(function() {
-loader.style.display = ‘none’;
-document.getElementById(‘main’).classList.add(‘visible’);
-}, 650);
-}, 400);
-}, REVEAL_AT);
+setTimeout(function(){
+loader.style.display=“none”;
+document.getElementById(“main”).classList.add(“visible”);
+},650);
+},400);
+},REVEAL_AT);
 
 }); // end DOMContentLoaded
-</script><script>
-/* ══ LOADER ══ */
-const LINES = [
-{t:0,   text:’> инициализация рунического протокола…’, dim:false},
-{t:700, text:’> загрузка Старшего Футарка [25 рун]’, dim:false},
-{t:1500,text:’> подключение нумерологической матрицы…’, dim:false},
-{t:2400,text:’> калибровка аттов и позиций…’, dim:false},
-{t:3300,text:’> система готова к расчёту ИРК █’, dim:false},
-];
+</script>
 
-const linesEl = document.getElementById(‘loaderLines’);
-const bar = document.getElementById(‘progressBar’);
-const pct = document.getElementById(‘progressPct’);
-
-// Type each line
-LINES.forEach(({t, text}) => {
-setTimeout(() => {
-const span = document.createElement(‘span’);
-span.className = ‘line’;
-span.innerHTML = text;
-span.style.opacity = ‘0’;
-linesEl.appendChild(span);
-requestAnimationFrame(() => {
-span.style.transition = ‘opacity .3s’;
-span.style.opacity = ‘1’;
-});
-}, t);
-});
-
-// Progress bar: fast 0→99, then pause, then 100
-let progress = 0;
-const totalDuration = 4200; // ms to reach 99
-const interval = 30;
-const steps = totalDuration / interval;
-const increment = 99 / steps;
-
-const timer = setInterval(() => {
-progress = Math.min(progress + increment + Math.random() * 0.5, 99);
-bar.style.width = progress + ‘%’;
-pct.textContent = Math.floor(progress) + ‘%’;
-if (progress >= 99) clearInterval(timer);
-}, interval);
-
-// At 3s: hit 100%, then reveal
-setTimeout(() => {
-progress = 100;
-bar.style.width = ‘100%’;
-pct.textContent = ‘100%’;
-
-setTimeout(() => {
-// Hide loader
-document.getElementById(‘loader’).classList.add(‘hide’);
-// Show matrix
-const canvas = document.getElementById(‘matrix-canvas’);
-canvas.style.display = ‘block’;
-initMatrix(canvas);
-// Show main
-setTimeout(() => {
-document.getElementById(‘main’).classList.add(‘visible’);
-document.getElementById(‘loader’).style.display = ‘none’;
-// Trigger reveals already in view
-document.querySelectorAll(’.reveal’).forEach(el => obs.observe(el));
-}, 300);
-}, 400);
-}, 5000);
-
-/* ══ MATRIX ══ */
-function initMatrix(canvas) {
-const ctx = canvas.getContext(‘2d’);
-const chars = ‘ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛋᛏᛒᛖᛗᛚᛜᛟᛞ01’.split(’’);
-const SZ = 22;
-let cols, drops;
-function resize() {
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-cols = Math.floor(canvas.width / SZ);
-drops = Array(cols).fill(0).map(() => -(Math.random() * 60 + 20));
-}
-resize();
-window.addEventListener(‘resize’, resize);
-function draw() {
-ctx.fillStyle = ‘rgba(0,0,0,0.045)’;
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.font = `bold ${SZ}px "Share Tech Mono",monospace`;
-for (let i = 0; i < cols; i++) {
-const y = drops[i] * SZ;
-const x = i * SZ;
-const ch = chars[Math.floor(Math.random() * chars.length)];
-ctx.fillStyle = ‘#e8fff0’; ctx.fillText(ch, x, y);
-if (y > SZ)      { ctx.fillStyle = ‘#00ff41’;              ctx.fillText(chars[Math.floor(Math.random()*chars.length)], x, y-SZ) }
-if (y > SZ*2)    { ctx.fillStyle = ‘rgba(0,210,55,0.5)’;   ctx.fillText(chars[Math.floor(Math.random()*chars.length)], x, y-SZ*2) }
-if (y > SZ*4)    { ctx.fillStyle = ‘rgba(0,140,35,0.25)’;  ctx.fillText(chars[Math.floor(Math.random()*chars.length)], x, y-SZ*4) }
-if (y > canvas.height && Math.random() > 0.985) drops[i] = -(Math.random() * 20 + 5);
-drops[i] += 0.23;
-}
-}
-setInterval(draw, 60);
-}
-
-/* ══ SCROLL REVEAL ══ */
-const obs = new IntersectionObserver(entries => {
-entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add(‘visible’); obs.unobserve(e.target); }});
-}, {threshold: 0.08});
-// observer is registered after loader finishes (see above)
-
-/* ══ IRK CALC ══ */
-const runes=[“Вирд”,“Феху”,“Уруз”,“Турисаз”,“Ансуз”,“Райдо”,“Кеназ”,“Гебо”,“Вуньо”,“Хагалаз”,“Наутиз”,“Иса”,“Йера”,“Эйваз”,“Перт”,“Альгиз”,“Соулу”,“Тейваз”,“Беркана”,“Эваз”,“Манназ”,“Лагуз”,“Ингуз”,“Отал”,“Дагаз”];
-const RS={“Вирд”:“□”,“Феху”:“ᚠ”,“Уруз”:“ᚢ”,“Турисаз”:“ᚦ”,“Ансуз”:“ᚨ”,“Райдо”:“ᚱ”,“Кеназ”:“ᚲ”,“Гебо”:“ᚷ”,“Вуньо”:“ᚹ”,“Хагалаз”:“ᚺ”,“Наутиз”:“ᚾ”,“Иса”:“ᛁ”,“Йера”:“ᛃ”,“Эйваз”:“ᛇ”,“Перт”:“ᛈ”,“Альгиз”:“ᛉ”,“Соулу”:“ᛋ”,“Тейваз”:“ᛏ”,“Беркана”:“ᛒ”,“Эваз”:“ᛖ”,“Манназ”:“ᛗ”,“Лагуз”:“ᛚ”,“Ингуз”:“ᛜ”,“Отал”:“ᛟ”,“Дагаз”:“ᛞ”};
-const D={“Вирд”:{essence:“Ты приходишь в этот мир без груза предыдущих жизней. Никаких долгов или готовых путей. Это полная свобода, где каждый шаг творит твою реальность.”,personality:“Жизнь для тебя — открытая книга, где страницы пусты. Ты сам рисуешь сюжет, но иногда ветер перелистывает их хаотично, если не ловить нить повествования.”,destiny:“В конце пути мир увидит историю, написанную одной рукой. Никаких древних пророчеств, только эхо твоих выборов, разнесённое ветром.”},“Феху”:{essence:“С рождения ты магнит для потоков, где вещи и возможности стекаются, словно река к морю.”,personality:“Ты плетёшь сети из сделок и обменов, где каждый узел — шанс превратить искру в пламя достатка.”,destiny:“Мир запомнит тебя как того, кто превращал пустыню в сад, оставляя следы изобилия для странников.”},“Уруз”:{essence:“В тебе бьёт ключом первозданная мощь, как река, что пробивает скалы, не зная усталости.”,personality:“Ты идёшь сквозь бури, где тело становится молотом, а воля — наковальней, куя победу из усилий.”,destiny:“В легендах ты станешь горой, что не сломалась, и эхом, что будит силу в тех, кто слышит.”},“Турисаз”:{essence:“Тебя окружают невидимые шипы, где каждый удар возвращается бумерангом, охраняя твою суть от чужой тени.”,personality:“Ты входишь в битвы, где ярость превращается в меч, а решимость — в щит, рассекая стены судьбы.”,destiny:“В сказаниях ты останешься стражем, чьи следы — разрушенные преграды, открывающие дороги для других.”},“Ансуз”:{essence:“Слово в тебе — как ветер, несущий шёпот богов, раскрывающий двери к скрытым знаниям.”,personality:“Ты ткёшь нити разговоров, где голос становится ключом, отпирающим сердца и умы.”,destiny:“Мир унесёт твои слова как семена, что прорастут в умах, меняя ход историй.”},“Райдо”:{essence:“Ты рождаешься с компасом внутри, где каждый шаг — часть вечного странствия, ведущего сквозь горизонты.”,personality:“Ты мчишься по тропам перемен, где ветер в спине, а мир раскрывается, как карта сокровищ.”,destiny:“В воспоминаниях ты станешь странником, чьи пути стали картой для потерянных душ.”},“Кеназ”:{essence:“В тебе тлеет искра, что разгорается в пламя, освещая тени и рождая формы из пустоты.”,personality:“Ты лепишь реальность из огня идей, где каждый всплеск — новый шедевр в хаосе повседневности.”,destiny:“Твои огни будут гореть в ночи, направляя тех, кто ищет свет в темноте.”},“Гебо”:{essence:“Обмен течёт в тебе, как река, где дающее и берущие сливаются в один поток.”,personality:“Ты связываешь нити судеб, где каждый узел — встреча, полная взаимного роста.”,destiny:“В историях ты останешься мостиком, соединившим души в вечном танце.”},“Вуньо”:{essence:“Радость бьёт в тебе ключом, как источник, что питает всё вокруг теплом и светом.”,personality:“Ты плетёшь дни из смеха и гармонии, где каждый миг — праздник души.”,destiny:“Твои улыбки разлетятся, как семена, расцветая в сердцах других.”},“Хагалаз”:{essence:“Буря, что разрывает ткани реальности, очищая путь для неведомого — твоя внутренняя стихия, сеющая хаос ради рождения.”,personality:“Ты становишься вихрем, сметающим отжившее, где каждый кризис — дверь в новое.”,destiny:“Твои бури станут легендами, что смели старые миры, оставив землю, готовую к свежим семенам.”},“Наутиз”:{essence:“Тени нужды и ограничений окутывают тебя с рождения, превращая давление в алмаз, закалённый в тисках судьбы.”,personality:“Ты идёшь тропой терпения, где каждый шаг под гнётом рождает силу, а нужда становится учителем.”,destiny:“Твои испытания разожгут огонь стойкости в других, оставив эхо мудрости, выкованной в огне ограничений.”},“Иса”:{essence:“Лёд, что сковывает реки, хранит в себе тишину ожиданий, готовую к пробуждению в нужный миг.”,personality:“Ты замираешь в паузе, где время кристаллизуется, давая ясность мыслям и силы для точного удара.”,destiny:“Твоя тишина станет убежищем для бурь мира, эхом, что учит ценить покой перед бурей.”},“Йера”:{essence:“Круги времени вертятся вокруг тебя, обещая урожай после сева, в ритме сезонов и циклов жизни.”,personality:“Ты плетёшь нити терпения, где труд медленно зреет, превращая семена в золотые плоды.”,destiny:“Твои циклы станут уроком для мира, оставив следы стабильности, что питают будущие поколения.”},“Эйваз”:{essence:“Ветви дерева миров тянутся через тебя, соединяя глубины земли с высотами небес в едином дыхании.”,personality:“Ты переходишь грани, где шаманские тропы ведут к слиянию реальностей, открывая двери невидимого.”,destiny:“Твои мосты станут путями для странников, эхом связи, что объединяет разрозненное в целое.”},“Перт”:{essence:“Колодец тайн прячется в твоей глубине, полный древних вод, что шепчут о скрытых сокровищах.”,personality:“Ты ныряешь в завесы интуиции, где гадания и рождения раскрывают невидимое в повседневном.”,destiny:“Твои загадки станут легендами, манящими искателей к глубинам, что ты открыл.”},“Альгиз”:{essence:“Ветви охраны раскидываются над тобой, связывая с силами, что отводят тени и бурю.”,personality:“Ты стоишь как страж, где молитвы и помощь другим становятся твоим доспехом в потоке жизни.”,destiny:“Твоя защита станет убежищем, эхом, что охраняет души в мире хаоса.”},“Соулу”:{essence:“Солнце разгорается в твоей груди, неся энергию, что рассеивает мрак и дарит тепло.”,personality:“Ты ведёшь через свет, где лидерство и вдохновение зажигают пути в темноте.”,destiny:“Твои лучи станут вечным огнём, освещающим дороги для тех, кто следует за тобой.”},“Тейваз”:{essence:“Стрелка истины всегда указывает направление, ведя тебя через туман к чести и правде.”,personality:“Ты сражаешься за честь, где битвы становятся полотном для картин справедливости.”,destiny:“Твои дела станут маяком, что направляет других к истине в мире лжи.”},“Беркана”:{essence:“Рост течёт через тебя, как река, что питает землю, рождая жизнь из семян.”,personality:“Ты заботишься, где любовь и творчество расцветают, превращая пустоту в сад.”,destiny:“Твои корни станут лесом, дающим тень и плоды для будущих путников.”},“Эваз”:{essence:“Дуэт гармонии звучит в тебе, где два пути сливаются в один поток движения.”,personality:“Ты мчишься в паре, где доверие превращает одиночество в совместный полёт.”,destiny:“Твои союзы станут легендами, что связывают сердца в вечном ритме.”},“Манназ”:{essence:“Зеркало души отражает в тебе суть человечности, полную глубин и отражений.”,personality:“Ты познаёшь через встречи, где общество становится зеркалом для самооткрытия.”,destiny:“Твои уроки станут компасом, ведущим других к пониманию себя.”},“Лагуз”:{essence:“Вы человек, который живет в потоке жизни и прислушивается к своим ощущениям, умеете адаптироваться к переменам.”,personality:“В мире чаще всего вы проявляетесь как чуткий и внимательный человек, который умеет подстраиваться под людей и обстоятельства.”,destiny:“Ваше наследие — помогать себе и другим продвигаться вперед, используя возможности, которые появляются.”},“Ингуз”:{essence:“Вы человек, который любит доводить дела до конца и видеть результаты своих действий.”,personality:“Снаружи вы проявляетесь как активный и надежный человек, который умеет брать инициативу.”,destiny:“Ваше наследие — создавать новые возможности, которые приносят пользу вам и окружающим.”},“Отал”:{essence:“По своей природе вы человек, для которого важны стабильность, свои корни и чувство опоры в жизни.”,personality:“Внешне вы проявляетесь как человек надежный, собранный, умеющий держать границы.”,destiny:“Ваше наследие связано с темой рода, дома и сохранения ценностей.”},“Дагаз”:{essence:“В основе вашей природы заложена энергия перемен и обновления. Вы внутренне стремитесь к развитию.”,personality:“В поведении вы проявляетесь как человек, который легко принимает перемены и способен быстро перестраиваться.”,destiny:“Ваше наследие связано со способностью начинать новые этапы и обновлять жизненные процессы.”}};
-const maps={ru:{‘а’:1,‘б’:2,‘в’:3,‘г’:4,‘д’:5,‘е’:6,‘ё’:7,‘ж’:8,‘з’:9,‘и’:1,‘й’:2,‘к’:3,‘л’:4,‘м’:5,‘н’:6,‘о’:7,‘п’:8,‘р’:9,‘с’:1,‘т’:2,‘у’:3,‘ф’:4,‘х’:5,‘ц’:6,‘ч’:7,‘ш’:8,‘щ’:9,‘ъ’:1,‘ы’:2,‘ь’:3,‘э’:4,‘ю’:5,‘я’:6},en:{‘a’:1,‘b’:2,‘c’:3,‘d’:4,‘e’:5,‘f’:6,‘g’:7,‘h’:8,‘i’:9,‘j’:1,‘k’:2,‘l’:3,‘m’:4,‘n’:5,‘o’:6,‘p’:7,‘q’:8,‘r’:9,‘s’:1,‘t’:2,‘u’:3,‘v’:4,‘w’:5,‘x’:6,‘y’:7,‘z’:8}};
-function cV(c,l){return maps[l][c.toLowerCase()]||0}
-function sS(s,l){let t=0;for(let c of s)if(/[а-яёa-z]/i.test(c))t+=cV(c,l);return t}
-function dr(n){if(n<=0)return 9;let r=n%9;return r||9}
-function at(d){let m=d%3;return m||3}
-function mj(a){let c={1:0,2:0,3:0};a.forEach(x=>{if(x>=1&&x<=3)c[x]++});let mx=Math.max(c[1],c[2],c[3]);if(mx<2)return null;for(let k=1;k<=3;k++)if(c[k]===mx)return k;return null}
-function rn(g,a){if(g===9)return”Вирд”;let i=(a-1)*8+g;return(i>=1&&i<=24)?runes[i]:”—”}
-function calc(){
-document.getElementById(“error”).style.display=“none”;
-document.getElementById(“result”).style.display=“none”;
-try{
-let lg=document.getElementById(“lang”).value;
-let sn=document.getElementById(“surname”).value.trim();
-let nm=document.getElementById(“name”).value.trim();
-let pt=document.getElementById(“patr”).value.trim();
-let db=document.getElementById(“dob”).value;
-if(!sn||!nm||!db)return;
-let[y,m,d]=db.split(”-”);
-let sd=0;for(let c of d)sd+=+c||0;
-let sm=0;for(let c of m)sm+=+c||0;
-let sy=0;for(let c of y)sy+=+c||0;
-let gb=dr(sd+sm+sy),drd=dr(sd),drm=dr(sm),dry=dr(sy);
-let ab=mj([at(drd),at(drm),at(dry)])||at(gb);
-let re=rn(gb,ab);
-let ss=sS(sn,lg),snm=sS(nm,lg),sp=sS(pt,lg);
-let gp=dr(ss+snm+sp),drs=dr(ss),drn=dr(snm),drp=dr(sp);
-let ap=mj([at(drs),at(drn),at(drp)])||at(gp);
-let rp=rn(gp,ap);
-let gg=dr(gb+gp);
-let ag=mj([at(dr(drd+drn)),at(dr(drm+drp)),at(dr(dry+drs))])||at(gg);
-let rd=rn(gg,ag);
-const sym=r=>RS[r]||””;
-[[“re”,re],[“rp”,rp],[“rd”,rd]].forEach(([id,v])=>{document.getElementById(id).textContent=v;document.getElementById(id+“2”).textContent=v});
-[[“symE”,re],[“symP”,rp],[“symD”,rd]].forEach(([id,v])=>{document.getElementById(id).textContent=sym(v);document.getElementById(id+“2”).textContent=sym(v)});
-document.getElementById(“descE”).textContent=D[re]?.essence||””;
-document.getElementById(“descP”).textContent=D[rp]?.personality||””;
-document.getElementById(“descD”).textContent=D[rd]?.destiny||””;
-document.getElementById(“result”).style.display=“block”;
-document.getElementById(“result”).scrollIntoView({behavior:“smo
+</body>
+</html>
