@@ -198,34 +198,34 @@ body{color:var(--green);font-family:'Share Tech Mono',monospace}
 .hero-cta:hover::before{transform:scaleX(1)}
 .hero-cta:hover{color:#000}
 
-@media (max-width: 700px) {
-    /* 1. Ровняем декоративные руны по центру, чтобы не уезжали влево */
+/* Общий фикс для всех мобил и горизонтального режима (до 900px) */
+@media screen and (max-width: 900px) {
+  
   .hero-runes {
     display: block !important;
     width: 100% !important;
-    text-align: center !important; /* Центрируем */
-    font-size: 16px !important;    /* Уменьшаем, чтобы влезло в строку */
-    letter-spacing: 5px !important; /* Чуть плотнее для узкого экрана */
+    text-align: center !important;
+    /* Чуть увеличим размер рун для красоты */
+    font-size: 18px !important;    
+    letter-spacing: 6px !important; 
     margin-bottom: 24px !important;
-    
-    /* Убираем "хвост" от последней буквы, который толкал текст влево */
-    margin-right: -5px !important; 
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    /* Компенсируем хвост последней буквы */
+    margin-right: -6px !important; 
   }
 
-  /* 2. Делаем кнопку в одну строку без переносов */
   .hero-cta {
-    white-space: nowrap !important;   /* ЗАПРЕТ ПЕРЕНОСА СЛОВА "КОД" */
-    display: inline-flex !important;  /* Чтобы кнопка не растягивалась на весь экран */
+    /* ЖЕСТКИЙ ЗАПРЕТ ПЕРЕНОСА во всех режимах телефона */
+    white-space: nowrap !important;   
+    display: inline-flex !important;  
     align-items: center !important;
     justify-content: center !important;
     
-    font-size: 14px !important;       /* Уменьшаем шрифт, чтобы фраза влезла */
-    letter-spacing: 2px !important;   /* Уменьшаем спейсинг (был 6px) */
-    padding: 12px 24px !important;    /* Делаем чуть компактнее */
+    /* Увеличиваем размер для iPhone 13 Pro */
+    font-size: 16px !important;       /* Было 14, стало 16 */
+    letter-spacing: 3px !important;   /* Было 2, стало 3 */
+    padding: 14px 28px !important;    /* Сделали кнопку чуть "жирнее" */
     
-    margin-left: auto !important;     /* Центрируем саму кнопку в блоке */
+    margin-left: auto !important;     
     margin-right: auto !important;
   }
 }
