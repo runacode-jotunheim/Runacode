@@ -380,10 +380,9 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .block-rune-sym{font-family:'VT323',monospace;font-size:18px;color:var(--green);text-shadow:0 0 8px var(--green);vertical-align:middle;margin-right:8px}
 
 /* ══ FAMILY MODE ══ */
-.mode-switch{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
-.mode-switch .btn{margin-top:0}
-.btn.mode-on{color:#000}
-.btn.mode-on::before{transform:scaleX(1)}
+#famCard{margin-top:24px;scroll-margin-top:16px}
+#famCard .card-title{margin-top:0}
+#famOpen{margin-top:0}
 .fam-hint{font-size:11px;line-height:1.6;color:rgba(200,255,218,0.7);margin:14px 0 4px;text-align:center}
 .fam-person{margin-top:18px;padding:4px 14px 16px;border:1px solid rgba(0,255,65,0.15);border-radius:8px;background:rgba(0,255,65,0.02)}
 .fam-person-title{font-family:'VT323',monospace;font-size:18px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-top:12px;text-shadow:0 0 8px rgba(0,255,65,0.5)}
@@ -509,13 +508,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   <div class="card">
     <div class="card-inner">
       <div class="card-title">[ РАСЧЁТ ИРК ]</div>
-      <div class="mode-switch">
-        <button type="button" class="btn mode-on" id="modeSolo"><span>Рассчитать ИРК</span></button>
-        <button type="button" class="btn" id="modeFam"><span>Рассчитать ИРК семьи</span></button>
-      </div>
       <label>Язык / Language</label>
       <select id="lang"><option value="ru">Русский</option><option value="en">English</option></select>
-      <div id="soloPane">
       <label>Фамилия</label><input id="surname" placeholder="введите фамилию">
       <label>Имя</label><input id="name" placeholder="введите имя">
       <label>Отчество (при наличии)</label><input id="patr" placeholder="не обязательно">
@@ -533,10 +527,15 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descE','toggleE')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symE2" style="flex-shrink:0"></span><span>Руна Сущности — <span id="re2"></span></span></span><span class="result-toggle" id="toggleE">-</span></div><div class="desc" id="descE" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descP','toggleP')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symP2" style="flex-shrink:0"></span><span>Руна Личности — <span id="rp2"></span></span></span><span class="result-toggle" id="toggleP">-</span></div><div class="desc" id="descP" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descD','toggleD')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symD2" style="flex-shrink:0"></span><span>Золотая Руна — <span id="rd2"></span></span></span><span class="result-toggle" id="toggleD">-</span></div><div class="desc" id="descD" style="display:block"></div></div>
-        <button type="button" class="btn" id="toFam"><span>&#9654; Рассчитать ИРК семьи</span></button>
       </div>
-      </div><!-- /soloPane -->
+      <div id="error">// ОШИБКА РАСЧЁТА &#9608;</div>
+    </div>
+  </div>
+  <div class="card" id="famCard">
+    <div class="card-inner">
+      <button type="button" class="btn" id="famOpen"><span>&#9654; РАСЧЁТ ИРК СЕМЬИ</span></button>
       <div id="famPane" style="display:none">
+        <div class="card-title">[ РАСЧЁТ ИРК СЕМЬИ ]</div>
         <div class="fam-hint">Заполни минимум двоих. Третьего можно оставить пустым.</div>
         <div class="fam-person">
           <div class="fam-person-title">Папа</div>
@@ -575,7 +574,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
           </div>
         </div>
       </div><!-- /famPane -->
-      <div id="error">// ОШИБКА РАСЧЁТА &#9608;</div>
     </div>
   </div>
 </section>
@@ -625,7 +623,7 @@ style="filter:drop-shadow(0 0 4px rgba(0,255,65,0.55))">
 
 Instagram*
 </a>
-<span id="footMeta" style="display:none"><br>* Instagram принадлежит компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории Российской Федерации</span>
+<span id="footMeta" style="display:none"><br>* Компания Meta Platforms Inc. признана экстремистской организацией, её деятельность запрещена на территории РФ</span>
 
 </span>
 </div>
@@ -808,13 +806,9 @@ var FAMILY_CTA_URL="https://ig.me/m/golos.rebenka";
 var FAM=[["dad","Папа"],["mom","Мама"],["kid","Ребёнок"]];
 var FAM_F=["surname","name","patr","dob"];
 
-function setMode(fam){
-  document.getElementById("soloPane").style.display=fam?"none":"block";
-  document.getElementById("famPane").style.display=fam?"block":"none";
-  document.getElementById("modeSolo").classList.toggle("mode-on",!fam);
-  document.getElementById("modeFam").classList.toggle("mode-on",fam);
-  document.getElementById("error").style.display="none";
-  document.getElementById("famMsg").style.display="none";
+function openFam(){
+  document.getElementById("famOpen").style.display="none";
+  document.getElementById("famPane").style.display="block";
 }
 function famEl(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
 
@@ -902,16 +896,11 @@ document.getElementById("famSolo").addEventListener("click",function(){
     var el=document.getElementById(f);el.value=document.getElementById("f_"+famOne+"_"+f).value;
     sessionStorage.setItem("irk_"+f,el.value);
   });}
-  setMode(false);
+  document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});
   document.getElementById("btn").click();
 });
 
-document.getElementById("modeSolo").addEventListener("click",function(){setMode(false);});
-document.getElementById("modeFam").addEventListener("click",function(){setMode(true);});
-document.getElementById("toFam").addEventListener("click",function(){
-  setMode(true);
-  document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});
-});
+document.getElementById("famOpen").addEventListener("click",openFam);
 document.getElementById("famBtn").addEventListener("click",calcFamily);
 FAM.forEach(function(p){FAM_F.forEach(function(f){
   var id="f_"+p[0]+"_"+f,el=document.getElementById(id);
@@ -921,7 +910,12 @@ FAM.forEach(function(p){FAM_F.forEach(function(f){
 });});
 /* Спец-ссылка: /?family или /#family сразу открывает расчёт семьи */
 if(/(^|[?&#])family\b/.test(location.search+location.hash)){
-  setMode(true);
+  openFam();
+  var famTries=0,famT=setInterval(function(){
+    var c=document.getElementById("famCard");
+    if(c.offsetParent!==null){clearInterval(famT);c.scrollIntoView({block:"start"});setTimeout(function(){c.scrollIntoView({block:"start"});},900);}
+    else if(++famTries>60){clearInterval(famT);}
+  },300);
   document.getElementById("footTg").style.display="none";
   document.getElementById("footIg").style.display="inline-flex";
   document.getElementById("footMeta").style.display="inline";
