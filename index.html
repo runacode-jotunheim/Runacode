@@ -403,6 +403,9 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .fam-cta{margin-top:24px;padding:20px 16px;border:1px solid rgba(0,255,65,0.3);border-radius:10px;background:rgba(0,255,65,0.04);text-align:center}
 .fam-cta p{font-size:13px;line-height:1.7;color:#c8ffda;margin:0 0 4px}
 .fam-cta a.btn{display:block;text-decoration:none;box-sizing:border-box;margin-top:16px;font-size:18px;letter-spacing:3px}
+.fam-msg{display:none;margin-top:18px;padding:16px 14px;border:1px solid rgba(0,255,65,0.25);border-radius:8px;background:rgba(0,255,65,0.04);text-align:center}
+.fam-msg p{font-size:13px;line-height:1.7;color:#c8ffda;margin:0}
+.fam-msg .fam-next{margin-top:14px}
 .fam-next{display:block;width:100%;margin-top:18px;padding:12px;background:transparent;border:1px dashed rgba(0,255,65,0.35);border-radius:6px;color:var(--green);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
 #error{display:none;margin-top:14px;text-align:center;font-size:11px;letter-spacing:2px;color:#ff4444;text-shadow:0 0 8px #ff0000}
 
@@ -515,7 +518,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
       <div id="soloPane">
       <label>Фамилия</label><input id="surname" placeholder="введите фамилию">
       <label>Имя</label><input id="name" placeholder="введите имя">
-      <label>Отчество (если есть)</label><input id="patr" placeholder="не обязательно">
+      <label>Отчество (при наличии)</label><input id="patr" placeholder="не обязательно">
       <label>Дата рождения</label><input type="date" id="dob">
       <button class="btn" id="btn"><span>&#9654; ИНИЦИАЛИЗАЦИЯ</span></button>
       <div id="result">
@@ -539,24 +542,28 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
           <div class="fam-person-title">Папа</div>
           <label>Фамилия</label><input id="f_dad_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_dad_name" placeholder="введите имя">
-          <label>Отчество (если есть)</label><input id="f_dad_patr" placeholder="не обязательно">
+          <label>Отчество (при наличии)</label><input id="f_dad_patr" placeholder="не обязательно">
           <label>Дата рождения</label><input type="date" id="f_dad_dob">
         </div>
         <div class="fam-person">
           <div class="fam-person-title">Мама</div>
           <label>Фамилия</label><input id="f_mom_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_mom_name" placeholder="введите имя">
-          <label>Отчество (если есть)</label><input id="f_mom_patr" placeholder="не обязательно">
+          <label>Отчество (при наличии)</label><input id="f_mom_patr" placeholder="не обязательно">
           <label>Дата рождения</label><input type="date" id="f_mom_dob">
         </div>
         <div class="fam-person">
           <div class="fam-person-title">Ребёнок</div>
           <label>Фамилия</label><input id="f_kid_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_kid_name" placeholder="введите имя">
-          <label>Отчество (если есть)</label><input id="f_kid_patr" placeholder="не обязательно">
+          <label>Отчество (при наличии)</label><input id="f_kid_patr" placeholder="не обязательно">
           <label>Дата рождения</label><input type="date" id="f_kid_dob">
         </div>
         <button class="btn" id="famBtn"><span>&#9654; РАССЧИТАТЬ СЕМЬЮ</span></button>
+        <div class="fam-msg" id="famMsg">
+          <p id="famMsgText"></p>
+          <button type="button" class="fam-next" id="famSolo">Данных о родителях нет? Рассчитать мой личный код</button>
+        </div>
         <div id="famResult">
           <div class="snapshot-label">&#9658; рунический код вашей семьи &#9666;</div>
           <div class="fam-tri" id="famTri"></div>
@@ -793,12 +800,19 @@ function setMode(fam){
   document.getElementById("modeSolo").classList.toggle("active",!fam);
   document.getElementById("modeFam").classList.toggle("active",fam);
   document.getElementById("error").style.display="none";
+  document.getElementById("famMsg").style.display="none";
 }
 function famEl(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
 
 function calcFamily(){
-  var err=document.getElementById("error"),res=document.getElementById("famResult");
-  err.style.display="none";res.style.display="none";
+  var res=document.getElementById("famResult"),msg=document.getElementById("famMsg");
+  var say=function(t,solo){
+    document.getElementById("famMsgText").textContent=t;
+    document.getElementById("famSolo").style.display=solo?"block":"none";
+    msg.style.display="block";msg.scrollIntoView({behavior:"smooth",block:"nearest"});
+  };
+  document.getElementById("error").style.display="none";
+  res.style.display="none";msg.style.display="none";famOne=null;
   try{
     var lg=document.getElementById("lang").value;
     var people=[];
@@ -808,7 +822,14 @@ function calcFamily(){
         people.push({key:p[0],role:p[1],name:v.name,code:computeCode(v.surname,v.name,v.patr,v.dob,lg)});
       }
     });
-    if(people.length<2){err.style.display="block";return;}
+    if(people.length===0){say("Введи фамилию, имя и дату рождения хотя бы двух человек, чтобы рассчитать семейный код.",false);return;}
+    if(people.length===1){
+      famOne=people[0].key;
+      say(famOne==="kid"
+        ?"Введи ещё одного человека — папу или маму, чтобы рассчитать семейный код."
+        :"Введи ещё одного человека — второго родителя или ребёнка, чтобы рассчитать семейный код.",true);
+      return;
+    }
     var by={};people.forEach(function(p){by[p.key]=p;});
 
     var tri=document.getElementById("famTri");tri.innerHTML="";
@@ -858,8 +879,18 @@ function calcFamily(){
     document.getElementById("famCta").href=FAMILY_CTA_URL;
     res.style.display="block";
     res.scrollIntoView({behavior:"smooth",block:"nearest"});
-  }catch(e){err.style.display="block";}
+  }catch(e){say("Не получилось рассчитать. Проверь данные и попробуй ещё раз.",false);}
 }
+/* Один человек в семейном режиме: переносим его данные в личный расчёт */
+var famOne=null;
+document.getElementById("famSolo").addEventListener("click",function(){
+  if(famOne){FAM_F.forEach(function(f){
+    var el=document.getElementById(f);el.value=document.getElementById("f_"+famOne+"_"+f).value;
+    sessionStorage.setItem("irk_"+f,el.value);
+  });}
+  setMode(false);
+  document.getElementById("btn").click();
+});
 
 document.getElementById("modeSolo").addEventListener("click",function(){setMode(false);});
 document.getElementById("modeFam").addEventListener("click",function(){setMode(true);});
