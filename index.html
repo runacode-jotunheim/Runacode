@@ -380,7 +380,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .block-rune-sym{font-family:'VT323',monospace;font-size:18px;color:var(--green);text-shadow:0 0 8px var(--green);vertical-align:middle;margin-right:8px}
 
 /* ══ FAMILY MODE ══ */
-#famCard{margin-top:24px;scroll-margin-top:16px}
+#famCard{margin-top:24px}
+#famHeader{scroll-margin-top:16px}
 #famCard .card-title{margin-top:0}
 #famOpen{margin-top:0}
 .fam-hint{font-size:11px;line-height:1.6;color:rgba(200,255,218,0.7);margin:14px 0 4px;text-align:center}
@@ -531,21 +532,28 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
       <div id="error">// ОШИБКА РАСЧЁТА &#9608;</div>
     </div>
   </div>
+  <div class="calc-header" id="famHeader" style="background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);border:1px solid rgba(0,255,65,0.12);border-radius:14px;padding:32px 24px;display:none;margin-top:40px">
+    <span class="section-eye" style="text-align:center">&#9658; инструмент расчёта</span>
+    <h2 class="section-title" style="margin-bottom:0">Рассчитай ИРК семьи</h2>
+    <p>Введи ФИО и дату рождения — получишь трёхрунную формулу с расшифровкой каждой позиции</p>
+  </div>
   <div class="card" id="famCard">
     <div class="card-inner">
       <button type="button" class="btn" id="famOpen"><span>&#9654; РАСЧЁТ ИРК СЕМЬИ</span></button>
       <div id="famPane" style="display:none">
         <div class="card-title">[ РАСЧЁТ ИРК СЕМЬИ ]</div>
-        <div class="fam-hint">Нужно внести хотя бы двоих членов семьи.<br>Вноси тех, кто тебя растил. Если это были бабушка, дедушка, отчим или опекун — выбери их в списке.</div>
+        <label>Язык / Language</label>
+        <select id="famLang"><option value="ru">Русский</option><option value="en">English</option></select>
+        <div class="fam-hint">Нужно внести хотя бы двоих членов семьи.<br>Вноси тех, кто тебя растил. Если это были бабушка, дедушка, отчим, мачеха или приёмные родители — выбери их в списке.</div>
         <div class="fam-person">
-          <label>Член семьи</label><select id="f_dad_role"><option selected>Папа</option><option>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Опекун</option></select>
+          <label>Член семьи</label><select id="f_dad_role"><option selected>Папа</option><option>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Приёмный папа</option><option>Приёмная мама</option></select>
           <label>Фамилия</label><input id="f_dad_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_dad_name" placeholder="введите имя">
           <label>Отчество (при наличии)</label><input id="f_dad_patr" placeholder="не обязательно">
           <label>Дата рождения</label><input type="date" id="f_dad_dob">
         </div>
         <div class="fam-person">
-          <label>Член семьи</label><select id="f_mom_role"><option>Папа</option><option selected>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Опекун</option></select>
+          <label>Член семьи</label><select id="f_mom_role"><option>Папа</option><option selected>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Приёмный папа</option><option>Приёмная мама</option></select>
           <label>Фамилия</label><input id="f_mom_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_mom_name" placeholder="введите имя">
           <label>Отчество (при наличии)</label><input id="f_mom_patr" placeholder="не обязательно">
@@ -810,6 +818,8 @@ var FAM_F=["surname","name","patr","dob"];
 function openFam(){
   document.getElementById("famOpen").style.display="none";
   document.getElementById("famPane").style.display="block";
+  document.getElementById("famHeader").style.display="block";
+  document.getElementById("famCard").style.marginTop="0";
 }
 function famEl(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
 
@@ -823,7 +833,7 @@ function calcFamily(){
   document.getElementById("error").style.display="none";
   res.style.display="none";msg.style.display="none";famOne=null;
   try{
-    var lg=document.getElementById("lang").value;
+    var lg=document.getElementById("famLang").value;
     var people=[];
     FAM.forEach(function(p){
       var v={};FAM_F.forEach(function(f){v[f]=document.getElementById("f_"+p[0]+"_"+f).value.trim();});
@@ -917,7 +927,7 @@ FAM.forEach(function(p){FAM_F.forEach(function(f){
 if(/(^|[?&#])family\b/.test(location.search+location.hash)){
   openFam();
   var famTries=0,famT=setInterval(function(){
-    var c=document.getElementById("famCard");
+    var c=document.getElementById("famHeader");
     if(c.offsetParent!==null){clearInterval(famT);c.scrollIntoView({block:"start"});setTimeout(function(){c.scrollIntoView({block:"start"});},900);}
     else if(++famTries>60){clearInterval(famT);}
   },300);
