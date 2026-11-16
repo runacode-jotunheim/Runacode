@@ -536,16 +536,18 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
       <button type="button" class="btn" id="famOpen"><span>&#9654; РАСЧЁТ ИРК СЕМЬИ</span></button>
       <div id="famPane" style="display:none">
         <div class="card-title">[ РАСЧЁТ ИРК СЕМЬИ ]</div>
-        <div class="fam-hint">Заполни минимум двоих. Третьего можно оставить пустым.</div>
+        <div class="fam-hint">Нужно внести хотя бы двоих членов семьи.<br>Если тебя растили бабушка, дедушка или другой близкий человек — выбери его вместо папы или мамы.</div>
         <div class="fam-person">
-          <div class="fam-person-title">Папа</div>
+          <div class="fam-person-title" id="f_dad_title">Папа</div>
+          <label>Кто это</label><select id="f_dad_role"><option selected>Папа</option><option>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Опекун</option></select>
           <label>Фамилия</label><input id="f_dad_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_dad_name" placeholder="введите имя">
           <label>Отчество (при наличии)</label><input id="f_dad_patr" placeholder="не обязательно">
           <label>Дата рождения</label><input type="date" id="f_dad_dob">
         </div>
         <div class="fam-person">
-          <div class="fam-person-title">Мама</div>
+          <div class="fam-person-title" id="f_mom_title">Мама</div>
+          <label>Кто это</label><select id="f_mom_role"><option>Папа</option><option selected>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Опекун</option></select>
           <label>Фамилия</label><input id="f_mom_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_mom_name" placeholder="введите имя">
           <label>Отчество (при наличии)</label><input id="f_mom_patr" placeholder="не обязательно">
@@ -804,6 +806,7 @@ _fields.forEach(function(id){
 /* Куда ведёт кнопка «Записаться на разбор» */
 var FAMILY_CTA_URL="https://ig.me/m/golos.rebenka";
 var FAM=[["dad","Папа"],["mom","Мама"],["kid","Ребёнок"]];
+function famRole(p){var r=document.getElementById("f_"+p[0]+"_role");return r?r.value:p[1];}
 var FAM_F=["surname","name","patr","dob"];
 
 function openFam(){
@@ -827,15 +830,13 @@ function calcFamily(){
     FAM.forEach(function(p){
       var v={};FAM_F.forEach(function(f){v[f]=document.getElementById("f_"+p[0]+"_"+f).value.trim();});
       if(v.surname&&v.name&&v.dob){
-        people.push({key:p[0],role:p[1],name:v.name,code:computeCode(v.surname,v.name,v.patr,v.dob,lg)});
+        people.push({key:p[0],role:famRole(p),name:v.name,code:computeCode(v.surname,v.name,v.patr,v.dob,lg)});
       }
     });
-    if(people.length===0){say("Введи фамилию, имя и дату рождения хотя бы двух человек, чтобы рассчитать семейный код.",false);return;}
+    if(people.length===0){say("Нужно внести хотя бы двоих членов семьи: фамилию, имя и дату рождения каждого.",false);return;}
     if(people.length===1){
       famOne=people[0].key;
-      say(famOne==="kid"
-        ?"Введи ещё одного человека — папу или маму, чтобы рассчитать семейный код."
-        :"Введи ещё одного человека — второго родителя или ребёнка, чтобы рассчитать семейный код.",true);
+      say("Нужно внести ещё одного члена семьи, чтобы рассчитать семейный код.",true);
       return;
     }
     var by={};people.forEach(function(p){by[p.key]=p;});
@@ -850,7 +851,7 @@ function calcFamily(){
     FAM.forEach(function(p){
       var d=by[p[0]];
       var n=famEl("div","fam-node"+(p[0]==="kid"?" child":"")+(d?"":" empty"));
-      n.appendChild(famEl("div","fam-node-role",p[1]));
+      n.appendChild(famEl("div","fam-node-role",famRole(p)));
       n.appendChild(famEl("div","fam-node-name",d?d.name:"—"));
       if(d){
         var c=d.code;
@@ -902,6 +903,13 @@ document.getElementById("famSolo").addEventListener("click",function(){
 
 document.getElementById("famOpen").addEventListener("click",openFam);
 document.getElementById("famBtn").addEventListener("click",calcFamily);
+["dad","mom"].forEach(function(k){
+  var r=document.getElementById("f_"+k+"_role"),t=document.getElementById("f_"+k+"_title");
+  var saved=sessionStorage.getItem("irk_f_"+k+"_role");
+  if(saved){r.value=saved;if(r.value!==saved)r.selectedIndex=k==="dad"?0:1;}
+  t.textContent=r.value;
+  r.addEventListener("change",function(){t.textContent=r.value;sessionStorage.setItem("irk_f_"+k+"_role",r.value);});
+});
 FAM.forEach(function(p){FAM_F.forEach(function(f){
   var id="f_"+p[0]+"_"+f,el=document.getElementById(id);
   var saved=sessionStorage.getItem("irk_"+id);if(saved)el.value=saved;
