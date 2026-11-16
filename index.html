@@ -965,10 +965,10 @@ function renderFamily(pair,a,b,c){
   var box=document.getElementById("familyBox");box.innerHTML="";
   if(!pair||!c){box.style.display="none";return;}
   var who=c.role==="Питомец"?"питомец":"ребёнок";
-  var lp=sumRunes([a.code.rp,b.code.rp,c.code.rp]), lg=sumRunes([a.code.rd,b.code.rd,c.code.rd]);
+  var le=sumRunes([a.code.re,b.code.re,c.code.re]), lp=sumRunes([a.code.rp,b.code.rp,c.code.rp]), lg=sumRunes([a.code.rd,b.code.rd,c.code.rd]);
   box.appendChild(famEl("div","snapshot-label","► рунокод семьи ◄"));
   var snap=famEl("div","rune-snapshot");
-  [[pair.destiny,"Золотая пары"],[lp,"Личность семьи"],[lg,"Золотая семьи"]].forEach(function(x,i){
+  [[le,"Сущность"],[lp,"Личность"],[lg,"Золотая"]].forEach(function(x,i){
     if(i)snap.appendChild(famEl("div","rune-divider","·"));
     var cell=famEl("div","rune-cell");
     cell.appendChild(famEl("div","rune-cell-symbol",RS[x[0]]||""));
@@ -980,6 +980,7 @@ function renderFamily(pair,a,b,c){
   var lead=famEl("div","desc");lead.style.cssText="display:block;margin-bottom:16px";
   lead.textContent="Когда в семью приходит "+who+", программа пары не стирается — над ней надстраивается следующий этаж ответственности. Внутренняя природа вашего союза остаётся прежней, а "+who+" со своим рунокодом становится тренажёром и условием допуска к Золотой руне пары.";
   box.appendChild(lead);
+  famBlock(box,"Руна Сущности семьи",le);
   famBlock(box,"Руна Личности семьи",lp);
   famBlock(box,"Золотая Руна семьи",lg);
   box.style.display="block";
