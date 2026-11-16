@@ -380,9 +380,10 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .block-rune-sym{font-family:'VT323',monospace;font-size:18px;color:var(--green);text-shadow:0 0 8px var(--green);vertical-align:middle;margin-right:8px}
 
 /* ══ FAMILY MODE ══ */
-.mode-switch{display:flex;gap:8px;margin-bottom:8px}
-.mode-btn{flex:1;padding:12px 6px;background:transparent;border:1px solid rgba(0,255,65,0.22);border-radius:6px;color:var(--green-dim);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.mode-btn.active{border-color:var(--green);color:var(--green);background:rgba(0,255,65,0.08);box-shadow:0 0 10px rgba(0,255,65,0.15)}
+.mode-switch{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+.mode-switch .btn{margin-top:0}
+.btn.mode-on{color:#000}
+.btn.mode-on::before{transform:scaleX(1)}
 .fam-hint{font-size:11px;line-height:1.6;color:rgba(200,255,218,0.7);margin:14px 0 4px;text-align:center}
 .fam-person{margin-top:18px;padding:4px 14px 16px;border:1px solid rgba(0,255,65,0.15);border-radius:8px;background:rgba(0,255,65,0.02)}
 .fam-person-title{font-family:'VT323',monospace;font-size:18px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-top:12px;text-shadow:0 0 8px rgba(0,255,65,0.5)}
@@ -402,11 +403,10 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .fam-acc-body{display:none;padding:14px 12px 2px}
 .fam-cta{margin-top:24px;padding:20px 16px;border:1px solid rgba(0,255,65,0.3);border-radius:10px;background:rgba(0,255,65,0.04);text-align:center}
 .fam-cta p{font-size:13px;line-height:1.7;color:#c8ffda;margin:0 0 4px}
-.fam-cta a.btn{display:block;text-decoration:none;box-sizing:border-box;margin-top:16px;font-size:18px;letter-spacing:3px}
+.fam-cta a.btn{display:block;text-decoration:none;box-sizing:border-box;margin-top:16px;text-align:center}
 .fam-msg{display:none;margin-top:18px;padding:16px 14px;border:1px solid rgba(0,255,65,0.25);border-radius:8px;background:rgba(0,255,65,0.04);text-align:center}
 .fam-msg p{font-size:13px;line-height:1.7;color:#c8ffda;margin:0}
-.fam-msg .fam-next{margin-top:14px}
-.fam-next{display:block;width:100%;margin-top:18px;padding:12px;background:transparent;border:1px dashed rgba(0,255,65,0.35);border-radius:6px;color:var(--green);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+.fam-msg .btn{margin-top:14px}
 #error{display:none;margin-top:14px;text-align:center;font-size:11px;letter-spacing:2px;color:#ff4444;text-shadow:0 0 8px #ff0000}
 
 /* REVEAL */
@@ -510,8 +510,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
     <div class="card-inner">
       <div class="card-title">[ РАСЧЁТ ИРК ]</div>
       <div class="mode-switch">
-        <button type="button" class="mode-btn active" id="modeSolo">Рассчитать ИРК</button>
-        <button type="button" class="mode-btn" id="modeFam">Рассчитать ИРК семьи</button>
+        <button type="button" class="btn mode-on" id="modeSolo"><span>Рассчитать ИРК</span></button>
+        <button type="button" class="btn" id="modeFam"><span>Рассчитать ИРК семьи</span></button>
       </div>
       <label>Язык / Language</label>
       <select id="lang"><option value="ru">Русский</option><option value="en">English</option></select>
@@ -533,7 +533,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descE','toggleE')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symE2" style="flex-shrink:0"></span><span>Руна Сущности — <span id="re2"></span></span></span><span class="result-toggle" id="toggleE">-</span></div><div class="desc" id="descE" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descP','toggleP')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symP2" style="flex-shrink:0"></span><span>Руна Личности — <span id="rp2"></span></span></span><span class="result-toggle" id="toggleP">-</span></div><div class="desc" id="descP" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descD','toggleD')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symD2" style="flex-shrink:0"></span><span>Золотая Руна — <span id="rd2"></span></span></span><span class="result-toggle" id="toggleD">-</span></div><div class="desc" id="descD" style="display:block"></div></div>
-        <button type="button" class="fam-next" id="toFam">&#9658; рассчитать ИРК семьи: папа, мама, ребёнок</button>
+        <button type="button" class="btn" id="toFam"><span>&#9654; Рассчитать ИРК семьи</span></button>
       </div>
       </div><!-- /soloPane -->
       <div id="famPane" style="display:none">
@@ -562,7 +562,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
         <button class="btn" id="famBtn"><span>&#9654; РАССЧИТАТЬ СЕМЬЮ</span></button>
         <div class="fam-msg" id="famMsg">
           <p id="famMsgText"></p>
-          <button type="button" class="fam-next" id="famSolo">Данных о родителях нет? Рассчитать индивидуальный код</button>
+          <button type="button" class="btn" id="famSolo"><span>Данных о родителях нет? Рассчитать индивидуальный код</span></button>
         </div>
         <div id="famResult">
           <div class="snapshot-label">&#9658; рунический код вашей семьи &#9666;</div>
@@ -592,7 +592,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 <span style="color:rgba(0,255,65,0.22);font-size:9px;letter-spacing:2px">
 ИП Йотунхейм Таша Владимировна · ИНН 500908132894 · ОГРНИП 323508100430951<br>
 
-<a href="https://t.me/+QhmJ_u1TF9E5NjRi" target="_blank"
+<a id="footTg" href="https://t.me/+QhmJ_u1TF9E5NjRi" target="_blank"
 style="color:rgba(0,255,65,0.38);text-decoration:none;display:inline-flex;align-items:center;gap:4px;text-shadow:0 0 6px rgba(0,255,65,0.45);font-weight:300;letter-spacing:2px">
 
 <svg width="8" height="8" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg"
@@ -611,6 +611,19 @@ opacity="0.55"/>
 </svg>
 
 Telegram
+</a>
+
+<a id="footIg" href="https://instagram.com/golos.rebenka" target="_blank" rel="noopener"
+style="color:rgba(0,255,65,0.38);text-decoration:none;display:none;align-items:center;gap:4px;text-shadow:0 0 6px rgba(0,255,65,0.45);font-weight:300;letter-spacing:2px">
+
+<svg width="8" height="8" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg"
+style="filter:drop-shadow(0 0 4px rgba(0,255,65,0.55))">
+<rect x="14" y="14" width="212" height="212" rx="58" fill="black" stroke="#00ff41" stroke-width="16" opacity="0.55"/>
+<circle cx="120" cy="120" r="48" fill="none" stroke="#00ff41" stroke-width="16" opacity="0.55"/>
+<circle cx="178" cy="62" r="12" fill="#00ff41" opacity="0.55"/>
+</svg>
+
+Instagram
 </a>
 
 </span>
@@ -797,8 +810,8 @@ var FAM_F=["surname","name","patr","dob"];
 function setMode(fam){
   document.getElementById("soloPane").style.display=fam?"none":"block";
   document.getElementById("famPane").style.display=fam?"block":"none";
-  document.getElementById("modeSolo").classList.toggle("active",!fam);
-  document.getElementById("modeFam").classList.toggle("active",fam);
+  document.getElementById("modeSolo").classList.toggle("mode-on",!fam);
+  document.getElementById("modeFam").classList.toggle("mode-on",fam);
   document.getElementById("error").style.display="none";
   document.getElementById("famMsg").style.display="none";
 }
@@ -906,7 +919,11 @@ FAM.forEach(function(p){FAM_F.forEach(function(f){
   el.addEventListener("change",function(){sessionStorage.setItem("irk_"+id,el.value);});
 });});
 /* Спец-ссылка: /?family или /#family сразу открывает расчёт семьи */
-if(/(^|[?&#])family\b/.test(location.search+location.hash)){setMode(true);}
+if(/(^|[?&#])family\b/.test(location.search+location.hash)){
+  setMode(true);
+  document.getElementById("footTg").style.display="none";
+  document.getElementById("footIg").style.display="inline-flex";
+}
 
 /* ══ SCROLL REVEAL ══ */
 var obs=new IntersectionObserver(function(entries){
