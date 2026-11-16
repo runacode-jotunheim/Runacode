@@ -510,8 +510,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
     <div class="card-inner">
       <div class="card-title">[ РАСЧЁТ ИРК ]</div>
       <div class="mode-switch">
-        <button type="button" class="mode-btn active" id="modeSolo">Мой код</button>
-        <button type="button" class="mode-btn" id="modeFam">Код семьи</button>
+        <button type="button" class="mode-btn active" id="modeSolo">Рассчитать ИРК</button>
+        <button type="button" class="mode-btn" id="modeFam">Рассчитать ИРК семьи</button>
       </div>
       <label>Язык / Language</label>
       <select id="lang"><option value="ru">Русский</option><option value="en">English</option></select>
@@ -533,7 +533,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descE','toggleE')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symE2" style="flex-shrink:0"></span><span>Руна Сущности — <span id="re2"></span></span></span><span class="result-toggle" id="toggleE">-</span></div><div class="desc" id="descE" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descP','toggleP')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symP2" style="flex-shrink:0"></span><span>Руна Личности — <span id="rp2"></span></span></span><span class="result-toggle" id="toggleP">-</span></div><div class="desc" id="descP" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descD','toggleD')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symD2" style="flex-shrink:0"></span><span>Золотая Руна — <span id="rd2"></span></span></span><span class="result-toggle" id="toggleD">-</span></div><div class="desc" id="descD" style="display:block"></div></div>
-        <button type="button" class="fam-next" id="toFam">&#9658; рассчитать код семьи: папа, мама, ребёнок</button>
+        <button type="button" class="fam-next" id="toFam">&#9658; рассчитать ИРК семьи: папа, мама, ребёнок</button>
       </div>
       </div><!-- /soloPane -->
       <div id="famPane" style="display:none">
@@ -562,7 +562,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
         <button class="btn" id="famBtn"><span>&#9654; РАССЧИТАТЬ СЕМЬЮ</span></button>
         <div class="fam-msg" id="famMsg">
           <p id="famMsgText"></p>
-          <button type="button" class="fam-next" id="famSolo">Данных о родителях нет? Рассчитать мой личный код</button>
+          <button type="button" class="fam-next" id="famSolo">Данных о родителях нет? Рассчитать индивидуальный код</button>
         </div>
         <div id="famResult">
           <div class="snapshot-label">&#9658; рунический код вашей семьи &#9666;</div>
