@@ -623,8 +623,9 @@ style="filter:drop-shadow(0 0 4px rgba(0,255,65,0.55))">
 <circle cx="178" cy="62" r="12" fill="#00ff41" opacity="0.55"/>
 </svg>
 
-Instagram
+Instagram*
 </a>
+<span id="footMeta" style="display:none"><br>* Instagram принадлежит компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории Российской Федерации</span>
 
 </span>
 </div>
@@ -923,6 +924,7 @@ if(/(^|[?&#])family\b/.test(location.search+location.hash)){
   setMode(true);
   document.getElementById("footTg").style.display="none";
   document.getElementById("footIg").style.display="inline-flex";
+  document.getElementById("footMeta").style.display="inline";
 }
 
 /* ══ SCROLL REVEAL ══ */
