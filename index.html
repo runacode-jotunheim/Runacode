@@ -378,6 +378,32 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .result-label{font-size:9px;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:flex-start;gap:8px;font-weight:bold;text-shadow:0 0 8px rgba(0,255,65,0.6)}
 .desc{font-size:13px;line-height:1.75;color:#c8ffda}
 .block-rune-sym{font-family:'VT323',monospace;font-size:18px;color:var(--green);text-shadow:0 0 8px var(--green);vertical-align:middle;margin-right:8px}
+
+/* ══ FAMILY MODE ══ */
+.mode-switch{display:flex;gap:8px;margin-bottom:8px}
+.mode-btn{flex:1;padding:12px 6px;background:transparent;border:1px solid rgba(0,255,65,0.22);border-radius:6px;color:var(--green-dim);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.mode-btn.active{border-color:var(--green);color:var(--green);background:rgba(0,255,65,0.08);box-shadow:0 0 10px rgba(0,255,65,0.15)}
+.fam-hint{font-size:11px;line-height:1.6;color:rgba(200,255,218,0.7);margin:14px 0 4px;text-align:center}
+.fam-person{margin-top:18px;padding:4px 14px 16px;border:1px solid rgba(0,255,65,0.15);border-radius:8px;background:rgba(0,255,65,0.02)}
+.fam-person-title{font-family:'VT323',monospace;font-size:18px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-top:12px;text-shadow:0 0 8px rgba(0,255,65,0.5)}
+#famResult{display:none;margin-top:28px;border-top:1px solid rgba(0,255,65,0.12);padding-top:24px}
+.fam-tri{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:26px 12px;margin-bottom:28px;animation:fadeIn .4s ease both}
+.fam-tri svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.fam-tri svg line{stroke:rgba(0,255,65,0.35);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:4 4}
+.fam-node{position:relative;z-index:1;padding:12px 6px 10px;border:1px solid rgba(0,255,65,0.28);border-radius:10px;background:#020a04;text-align:center;min-width:0}
+.fam-node.child{grid-column:1 / span 2;justify-self:center;width:calc(50% - 6px)}
+.fam-node.empty{opacity:.3;border-style:dashed}
+.fam-node-role{font-size:8px;letter-spacing:3px;color:var(--green-dim);text-transform:uppercase;opacity:.7}
+.fam-node-name{font-family:'VT323',monospace;font-size:17px;color:var(--green);margin:2px 0 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fam-node-runes{font-family:'VT323',monospace;font-size:clamp(26px,8vw,40px);line-height:1;letter-spacing:6px;color:var(--green);text-shadow:0 0 12px var(--green)}
+.fam-node-names{font-size:9px;line-height:1.5;color:rgba(200,255,218,0.65);margin-top:6px}
+.fam-acc{margin-bottom:12px;border:1px solid rgba(0,255,65,0.15);border-radius:8px;overflow:hidden}
+.fam-acc-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 14px;cursor:pointer;font-size:10px;letter-spacing:2px;color:var(--green);text-transform:uppercase;background:rgba(0,255,65,0.04)}
+.fam-acc-body{display:none;padding:14px 12px 2px}
+.fam-cta{margin-top:24px;padding:20px 16px;border:1px solid rgba(0,255,65,0.3);border-radius:10px;background:rgba(0,255,65,0.04);text-align:center}
+.fam-cta p{font-size:13px;line-height:1.7;color:#c8ffda;margin:0 0 4px}
+.fam-cta a.btn{display:block;text-decoration:none;box-sizing:border-box;margin-top:16px;font-size:18px;letter-spacing:3px}
+.fam-next{display:block;width:100%;margin-top:18px;padding:12px;background:transparent;border:1px dashed rgba(0,255,65,0.35);border-radius:6px;color:var(--green);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
 #error{display:none;margin-top:14px;text-align:center;font-size:11px;letter-spacing:2px;color:#ff4444;text-shadow:0 0 8px #ff0000}
 
 /* REVEAL */
@@ -480,8 +506,13 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   <div class="card">
     <div class="card-inner">
       <div class="card-title">[ РАСЧЁТ ИРК ]</div>
+      <div class="mode-switch">
+        <button type="button" class="mode-btn active" id="modeSolo">Мой код</button>
+        <button type="button" class="mode-btn" id="modeFam">Код семьи</button>
+      </div>
       <label>Язык / Language</label>
       <select id="lang"><option value="ru">Русский</option><option value="en">English</option></select>
+      <div id="soloPane">
       <label>Фамилия</label><input id="surname" placeholder="введите фамилию">
       <label>Имя</label><input id="name" placeholder="введите имя">
       <label>Отчество (если есть)</label><input id="patr" placeholder="не обязательно">
@@ -499,7 +530,44 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descE','toggleE')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symE2" style="flex-shrink:0"></span><span>Руна Сущности — <span id="re2"></span></span></span><span class="result-toggle" id="toggleE">-</span></div><div class="desc" id="descE" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descP','toggleP')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symP2" style="flex-shrink:0"></span><span>Руна Личности — <span id="rp2"></span></span></span><span class="result-toggle" id="toggleP">-</span></div><div class="desc" id="descP" style="display:block"></div></div>
         <div class="result-block"><div class="result-label" onclick="toggleDesc('descD','toggleD')"><span style="display:flex;align-items:flex-start;gap:8px;flex:1"><span class="block-rune-sym" id="symD2" style="flex-shrink:0"></span><span>Золотая Руна — <span id="rd2"></span></span></span><span class="result-toggle" id="toggleD">-</span></div><div class="desc" id="descD" style="display:block"></div></div>
+        <button type="button" class="fam-next" id="toFam">&#9658; рассчитать код семьи: папа, мама, ребёнок</button>
       </div>
+      </div><!-- /soloPane -->
+      <div id="famPane" style="display:none">
+        <div class="fam-hint">Заполни минимум двоих. Третьего можно оставить пустым.</div>
+        <div class="fam-person">
+          <div class="fam-person-title">Папа</div>
+          <label>Фамилия</label><input id="f_dad_surname" placeholder="введите фамилию">
+          <label>Имя</label><input id="f_dad_name" placeholder="введите имя">
+          <label>Отчество (если есть)</label><input id="f_dad_patr" placeholder="не обязательно">
+          <label>Дата рождения</label><input type="date" id="f_dad_dob">
+        </div>
+        <div class="fam-person">
+          <div class="fam-person-title">Мама</div>
+          <label>Фамилия</label><input id="f_mom_surname" placeholder="введите фамилию">
+          <label>Имя</label><input id="f_mom_name" placeholder="введите имя">
+          <label>Отчество (если есть)</label><input id="f_mom_patr" placeholder="не обязательно">
+          <label>Дата рождения</label><input type="date" id="f_mom_dob">
+        </div>
+        <div class="fam-person">
+          <div class="fam-person-title">Ребёнок</div>
+          <label>Фамилия</label><input id="f_kid_surname" placeholder="введите фамилию">
+          <label>Имя</label><input id="f_kid_name" placeholder="введите имя">
+          <label>Отчество (если есть)</label><input id="f_kid_patr" placeholder="не обязательно">
+          <label>Дата рождения</label><input type="date" id="f_kid_dob">
+        </div>
+        <button class="btn" id="famBtn"><span>&#9654; РАССЧИТАТЬ СЕМЬЮ</span></button>
+        <div id="famResult">
+          <div class="snapshot-label">&#9658; рунический код вашей семьи &#9666;</div>
+          <div class="fam-tri" id="famTri"></div>
+          <div id="famAcc"></div>
+          <div class="fam-cta">
+            <p>Три кода рядом — это ещё не ответ.</p>
+            <p>Как они читаются вместе, где между вами опора и где конфликт — разбирается лично.</p>
+            <a class="btn" id="famCta" target="_blank" rel="noopener"><span>&#9654; ЗАПИСАТЬСЯ НА РАЗБОР</span></a>
+          </div>
+        </div>
+      </div><!-- /famPane -->
       <div id="error">// ОШИБКА РАСЧЁТА &#9608;</div>
     </div>
   </div>
@@ -652,16 +720,7 @@ function rn(g,a){if(g===9)return"Вирд";var i=(a-1)*8+g;return(i>=1&&i<=24)?r
 
 
 
-function calc(){
-  document.getElementById("error").style.display="none";
-  document.getElementById("result").style.display="none";
-  try{
-    var lg=document.getElementById("lang").value;
-    var sn=document.getElementById("surname").value.trim();
-    var nm=document.getElementById("name").value.trim();
-    var pt=document.getElementById("patr").value.trim();
-    var db=document.getElementById("dob").value;
-    if(!sn||!nm||!db)return;
+function computeCode(sn,nm,pt,db,lg){
     var parts=db.split("-");
     var y=parts[0],m=parts[1],d=parts[2];
     var sd=0;for(var i=0;i<d.length;i++)sd+=parseInt(d[i])||0;
@@ -677,6 +736,21 @@ function calc(){
     var gg=dr(gb+gp);
     var ag=mj([at(dr(drd+drn)),at(dr(drm+drp)),at(dr(dry+drs))])||at(gg);
     var rd=rn(gg,ag);
+    return {re:re,rp:rp,rd:rd};
+}
+
+function calc(){
+  document.getElementById("error").style.display="none";
+  document.getElementById("result").style.display="none";
+  try{
+    var lg=document.getElementById("lang").value;
+    var sn=document.getElementById("surname").value.trim();
+    var nm=document.getElementById("name").value.trim();
+    var pt=document.getElementById("patr").value.trim();
+    var db=document.getElementById("dob").value;
+    if(!sn||!nm||!db)return;
+    var code=computeCode(sn,nm,pt,db,lg);
+    var re=code.re,rp=code.rp,rd=code.rd;
     var sym=function(r){return RS[r]||"";};
     [["re",re],["rp",rp],["rd",rd]].forEach(function(pair){
       document.getElementById(pair[0]).textContent=pair[1];
@@ -706,6 +780,102 @@ _fields.forEach(function(id){
   el.addEventListener("input",function(){sessionStorage.setItem("irk_"+id,el.value);});
   el.addEventListener("change",function(){sessionStorage.setItem("irk_"+id,el.value);});
 });
+
+/* ══ FAMILY MODE ══ */
+/* Куда ведёт кнопка «Записаться на разбор» */
+var FAMILY_CTA_URL="https://t.me/+QhmJ_u1TF9E5NjRi";
+var FAM=[["dad","Папа"],["mom","Мама"],["kid","Ребёнок"]];
+var FAM_F=["surname","name","patr","dob"];
+
+function setMode(fam){
+  document.getElementById("soloPane").style.display=fam?"none":"block";
+  document.getElementById("famPane").style.display=fam?"block":"none";
+  document.getElementById("modeSolo").classList.toggle("active",!fam);
+  document.getElementById("modeFam").classList.toggle("active",fam);
+  document.getElementById("error").style.display="none";
+}
+function famEl(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+
+function calcFamily(){
+  var err=document.getElementById("error"),res=document.getElementById("famResult");
+  err.style.display="none";res.style.display="none";
+  try{
+    var lg=document.getElementById("lang").value;
+    var people=[];
+    FAM.forEach(function(p){
+      var v={};FAM_F.forEach(function(f){v[f]=document.getElementById("f_"+p[0]+"_"+f).value.trim();});
+      if(v.surname&&v.name&&v.dob){
+        people.push({key:p[0],role:p[1],name:v.name,code:computeCode(v.surname,v.name,v.patr,v.dob,lg)});
+      }
+    });
+    if(people.length<2){err.style.display="block";return;}
+    var by={};people.forEach(function(p){by[p.key]=p;});
+
+    var tri=document.getElementById("famTri");tri.innerHTML="";
+    var pos={dad:[25,22],mom:[75,22],kid:[50,80]};
+    var svg='<svg viewBox="0 0 100 100" preserveAspectRatio="none">';
+    [["dad","mom"],["dad","kid"],["mom","kid"]].forEach(function(l){
+      if(by[l[0]]&&by[l[1]])svg+='<line x1="'+pos[l[0]][0]+'" y1="'+pos[l[0]][1]+'" x2="'+pos[l[1]][0]+'" y2="'+pos[l[1]][1]+'"/>';
+    });
+    tri.innerHTML=svg+'</svg>';
+    FAM.forEach(function(p){
+      var d=by[p[0]];
+      var n=famEl("div","fam-node"+(p[0]==="kid"?" child":"")+(d?"":" empty"));
+      n.appendChild(famEl("div","fam-node-role",p[1]));
+      n.appendChild(famEl("div","fam-node-name",d?d.name:"—"));
+      if(d){
+        var c=d.code;
+        n.appendChild(famEl("div","fam-node-runes",(RS[c.re]||"")+(RS[c.rp]||"")+(RS[c.rd]||"")));
+        n.appendChild(famEl("div","fam-node-names",c.re+" · "+c.rp+" · "+c.rd));
+      }
+      tri.appendChild(n);
+    });
+
+    var acc=document.getElementById("famAcc");acc.innerHTML="";
+    people.forEach(function(d){
+      var c=d.code;
+      var box=famEl("div","fam-acc");
+      var head=famEl("div","fam-acc-head");
+      head.appendChild(famEl("span",null,d.role+" — "+d.name+" · "+(RS[c.re]||"")+" "+(RS[c.rp]||"")+" "+(RS[c.rd]||"")));
+      var tg=famEl("span","result-toggle","＋");head.appendChild(tg);
+      var body=famEl("div","fam-acc-body");
+      [["Руна Сущности",c.re,"essence"],["Руна Личности",c.rp,"personality"],["Золотая Руна",c.rd,"destiny"]].forEach(function(b){
+        var blk=famEl("div","result-block");
+        var lab=famEl("div","result-label");
+        lab.appendChild(famEl("span","block-rune-sym",RS[b[1]]||""));
+        lab.appendChild(famEl("span",null,b[0]+" — "+b[1]));
+        var ds=famEl("div","desc");ds.style.display="block";
+        ds.innerHTML=D[b[1]]?D[b[1]][b[2]]:"";
+        blk.appendChild(lab);blk.appendChild(ds);body.appendChild(blk);
+      });
+      head.addEventListener("click",function(){
+        var open=body.style.display==="block";
+        body.style.display=open?"none":"block";tg.textContent=open?"＋":"－";
+      });
+      box.appendChild(head);box.appendChild(body);acc.appendChild(box);
+    });
+
+    document.getElementById("famCta").href=FAMILY_CTA_URL;
+    res.style.display="block";
+    res.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }catch(e){err.style.display="block";}
+}
+
+document.getElementById("modeSolo").addEventListener("click",function(){setMode(false);});
+document.getElementById("modeFam").addEventListener("click",function(){setMode(true);});
+document.getElementById("toFam").addEventListener("click",function(){
+  setMode(true);
+  document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});
+});
+document.getElementById("famBtn").addEventListener("click",calcFamily);
+FAM.forEach(function(p){FAM_F.forEach(function(f){
+  var id="f_"+p[0]+"_"+f,el=document.getElementById(id);
+  var saved=sessionStorage.getItem("irk_"+id);if(saved)el.value=saved;
+  el.addEventListener("input",function(){sessionStorage.setItem("irk_"+id,el.value);});
+  el.addEventListener("change",function(){sessionStorage.setItem("irk_"+id,el.value);});
+});});
+/* Спец-ссылка: /?family или /#family сразу открывает расчёт семьи */
+if(/(^|[?&#])family\b/.test(location.search+location.hash)){setMode(true);}
 
 /* ══ SCROLL REVEAL ══ */
 var obs=new IntersectionObserver(function(entries){
