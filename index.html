@@ -825,7 +825,6 @@ var FAMILY_CTA_URL="https://ig.me/m/golos.rebenka";
 var FAM_F=["surname","name","patr","dob"];
 var KID_ROLES=["Ребёнок","Питомец"];
 var MAX_KIDS=6;
-var MIN_GAP=11; /* ребёнок младше папы, мамы, дедушки или бабушки минимум на столько лет */
 var famMode="family";
 var kidKeys=[];
 var famOne=null;
@@ -951,13 +950,12 @@ function calcFamily(){
     }
 
     if(!pair){
-      var GEN={"Папа":"папы","Мама":"мамы","Дедушка":"дедушки","Бабушка":"бабушки"};
+      /* ребёнок не может родиться раньше папы, мамы, дедушки или бабушки; будущая дата допустима */
+      var BIRTH={"Папа":1,"Мама":1,"Дедушка":1,"Бабушка":1};
       for(var ai=0;ai<adults.length;ai++){
-        var ad=adults[ai];if(!GEN[ad.role])continue;
-        var p=ad.dob.split("-"),limit=(parseInt(p[0],10)+MIN_GAP)+"-"+p[1]+"-"+p[2];
+        if(!BIRTH[adults[ai].role])continue;
         for(var ki=0;ki<kids.length;ki++){
-          var kd=kids[ki];
-          if(kd.role==="Ребёнок"&&kd.dob<limit){say("Проверь даты рождения: ребёнок "+kd.name+" должен быть младше "+GEN[ad.role]+" хотя бы на "+MIN_GAP+" лет.",false);return;}
+          if(kids[ki].role==="Ребёнок"&&kids[ki].dob<=adults[ai].dob){say("Проверь дату рождения.",false);return;}
         }
       }
     }
