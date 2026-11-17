@@ -1099,9 +1099,10 @@ document.getElementById("famBtn").addEventListener("click",calcFamily);
 (sessionStorage.getItem("irk_f_kids")||"kid").split(",").forEach(function(k){if(/^kid\d*$/.test(k)&&kidKeys.indexOf(k)<0&&kidKeys.length<MAX_KIDS)addKid(k);});
 if(kidKeys.indexOf("kid")<0)addKid("kid");
 
-/* Спец-ссылка: /?family или /#family сразу открывает расчёт семьи */
-if(/(^|[?&#])family\b/.test(location.search+location.hash)){
-  openFam("family");
+/* Спец-ссылки: /?family — расчёт семьи, /?pair — расчёт пары */
+var famLink=/(^|[?&#])family\b/.test(location.search+location.hash)?"family":/(^|[?&#])pair\b/.test(location.search+location.hash)?"pair":null;
+if(famLink){
+  openFam(famLink);
   var famTries=0,famT=setInterval(function(){
     var c=document.getElementById("famHeader");
     if(c.offsetParent!==null){clearInterval(famT);c.scrollIntoView({block:"start"});setTimeout(function(){c.scrollIntoView({block:"start"});},900);}
