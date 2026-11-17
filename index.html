@@ -825,6 +825,7 @@ var FAMILY_CTA_URL="https://ig.me/m/golos.rebenka";
 var FAM_F=["surname","name","patr","dob"];
 var KID_ROLES=["Ребёнок","Питомец"];
 var MAX_KIDS=6;
+var MIN_GAP=11; /* ребёнок младше папы, мамы, дедушки или бабушки минимум на столько лет */
 var famMode="family";
 var kidKeys=[];
 var famOne=null;
@@ -923,7 +924,7 @@ function readPerson(key,lg){
   var v={};FAM_F.forEach(function(f){v[f]=document.getElementById("f_"+key+"_"+f).value.trim();});
   if(!(v.surname&&v.name&&v.dob))return null;
   var r=document.getElementById("f_"+key+"_role");
-  return {key:key,role:r?r.value:"",name:v.name,code:computeCode(v.surname,v.name,v.patr,v.dob,lg)};
+  return {key:key,role:r?r.value:"",name:v.name,dob:v.dob,code:computeCode(v.surname,v.name,v.patr,v.dob,lg)};
 }
 
 function calcFamily(){
@@ -947,6 +948,18 @@ function calcFamily(){
       famOne=people[0].key;
       say(pair?"Внеси данные второго партнёра, чтобы рассчитать код пары.":"Нужно внести ещё одного члена семьи, чтобы рассчитать семейный код.",true);
       return;
+    }
+
+    if(!pair){
+      var GEN={"Папа":"папы","Мама":"мамы","Дедушка":"дедушки","Бабушка":"бабушки"};
+      for(var ai=0;ai<adults.length;ai++){
+        var ad=adults[ai];if(!GEN[ad.role])continue;
+        var p=ad.dob.split("-"),limit=(parseInt(p[0],10)+MIN_GAP)+"-"+p[1]+"-"+p[2];
+        for(var ki=0;ki<kids.length;ki++){
+          var kd=kids[ki];
+          if(kd.role==="Ребёнок"&&kd.dob<limit){say("Проверь даты рождения: ребёнок "+kd.name+" должен быть младше "+GEN[ad.role]+" хотя бы на "+MIN_GAP+" лет.",false);return;}
+        }
+      }
     }
 
     document.getElementById("famResultLabel").textContent=pair?"► рунические коды пары ◄":"► рунические коды вашей семьи ◄";
@@ -981,12 +994,15 @@ function calcFamily(){
       box.appendChild(head);box.appendChild(body);acc.appendChild(box);
     });
 
-    var pairCode=renderPair(dad,mom,pair);
-    var famShown=!pair&&people.length>=3;
-    renderFamily(pairCode,famShown?people:null,kids);
+    renderPair(dad,mom,pair);
+    var famShown=!pair&&adults.length>0&&kids.length>0;
+    var couple=!!(dad&&mom&&isCouple(dad.role,mom.role));
+    renderFamily(couple,famShown?people:null,kids);
     var note=document.getElementById("famNote");
-    if(!pair&&people.length<3){note.textContent="Код семьи считается, когда внесены трое и больше: взрослые, дети или питомцы.";note.style.display="block";}
-    else note.style.display="none";
+    if(!pair&&!famShown){
+      note.textContent=kids.length?"Код семьи считается, когда в семье есть хотя бы один взрослый.":"Код семьи считается, когда в семье есть ребёнок или питомец. Для двоих взрослых есть отдельный расчёт пары.";
+      note.style.display="block";
+    }else note.style.display="none";
     document.getElementById("famCtaLead").textContent=pair?"Два кода рядом — это ещё не ответ.":"Коды рядом — это ещё не ответ.";
     document.getElementById("famCta").href=FAMILY_CTA_URL;
     res.style.display="block";
@@ -1034,7 +1050,7 @@ function codeBlock(box,title,code,texts,labels,lead){
 }
 function renderPair(a,b,force){
   var box=document.getElementById("pairBox");box.innerHTML="";
-  if(!a||!b||(!force&&!isCouple(a.role,b.role))){box.style.display="none";return null;}
+  if(!force||!a||!b){box.style.display="none";return null;}
   var code={essence:sumRunes([a.code.re,b.code.re]),personality:sumRunes([a.code.rp,b.code.rp]),destiny:sumRunes([a.code.rd,b.code.rd])};
   codeBlock(box,"► рунокод пары ◄",code,PAIR_D,["Руна Сущности пары","Руна Личности пары","Золотая Руна пары"]);
   box.style.display="block";
@@ -1053,10 +1069,10 @@ function renderFamily(pair,people,kids){
     var pets=kids.filter(function(d){return d.role==="Питомец";}).length,ch=kids.length-pets;
     if(kids.length===1){
       var w=pets?"питомец":"ребёнок";
-      lead="Когда в семью приходит "+w+", программа пары не стирается — над ней надстраивается следующий этаж ответственности. Внутренняя природа вашего союза остаётся прежней, а "+w+" со своим рунокодом становится тренажёром и условием допуска к Золотой руне пары.";
+      lead="Когда в семью приходит "+w+", программа пары не стирается — над ней надстраивается следующий этаж ответственности. Внутренняя природа вашего союза остаётся прежней, а "+w+" со своим рунокодом становится тренажёром и условием допуска к Золотой руне пары. Рунокод пары считается отдельно — в расчёте ИРК пары.";
     }else{
       var ws=pets&&ch?"дети и питомцы":pets?"питомцы":"дети";
-      lead="Когда в семью приходят "+ws+", программа пары не стирается — над ней надстраивается следующий этаж ответственности. Внутренняя природа вашего союза остаётся прежней, а "+ws+" со своими рунокодами становятся тренажёром и условием допуска к Золотой руне пары.";
+      lead="Когда в семью приходят "+ws+", программа пары не стирается — над ней надстраивается следующий этаж ответственности. Внутренняя природа вашего союза остаётся прежней, а "+ws+" со своими рунокодами становятся тренажёром и условием допуска к Золотой руне пары. Рунокод пары считается отдельно — в расчёте ИРК пары.";
     }
   }
   codeBlock(box,"► рунокод семьи ◄",code,FAMILY_D,["Руна Сущности семьи","Руна Личности семьи","Золотая Руна семьи"],lead);
