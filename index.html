@@ -383,7 +383,9 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 #famCard{margin-top:24px}
 #famHeader{scroll-margin-top:16px}
 #famCard .card-title{margin-top:0}
-#famOpenPair{margin-top:0}
+#famToSolo{margin-top:0}
+#toTop{position:fixed;right:16px;bottom:20px;z-index:500;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);border:1px solid var(--green);border-radius:50%;color:var(--green);font-family:'VT323',monospace;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 0 12px rgba(0,255,65,0.25);opacity:0;pointer-events:none;transition:opacity .25s}
+#toTop.show{opacity:1;pointer-events:auto}
 #famPane{margin-top:28px}
 #famPane.mode-pair .fam-only,#famPane.mode-family .pair-only{display:none}
 .fam-remove{display:block;width:100%;margin-top:14px;padding:10px;background:transparent;border:1px dashed rgba(0,255,65,0.3);border-radius:6px;color:var(--green-dim);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
@@ -548,6 +550,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   </div>
   <div class="card" id="famCard">
     <div class="card-inner">
+      <button type="button" class="btn" id="famToSolo"><span>&#9654; РАСЧЁТ ИРК ЧЕЛОВЕКА</span></button>
       <button type="button" class="btn" id="famOpenPair"><span>&#9654; РАСЧЁТ ИРК ПАРЫ</span></button>
       <button type="button" class="btn" id="famOpen"><span>&#9654; РАСЧЁТ ИРК СЕМЬИ</span></button>
       <div id="famPane" class="mode-family" style="display:none">
@@ -648,6 +651,7 @@ Instagram*
 </div>
 </footer>
 
+<button type="button" id="toTop" aria-label="Наверх">&#9650;</button>
 </div><!-- /main -->
 
 
@@ -1089,6 +1093,13 @@ document.getElementById("famSolo").addEventListener("click",function(){
 });
 
 document.getElementById("famOpenPair").addEventListener("click",function(){openFam("pair");});
+document.getElementById("famToSolo").addEventListener("click",function(){document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});});
+(function(){
+  var up=document.getElementById("toTop");
+  var check=function(){up.classList.toggle("show",window.scrollY>600);};
+  window.addEventListener("scroll",check,{passive:true});check();
+  up.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});
+})();
 document.getElementById("famOpen").addEventListener("click",function(){openFam("family");});
 document.getElementById("famAddKid").addEventListener("click",function(){addKid();});
 document.getElementById("famBtn").addEventListener("click",calcFamily);
