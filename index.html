@@ -383,7 +383,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 #famCard{margin-top:24px}
 #famHeader{scroll-margin-top:16px}
 #famCard .card-title{margin-top:0}
-#famToSolo{margin-top:0}
 #toTop{position:fixed;right:16px;bottom:20px;z-index:500;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);border:1px solid var(--green);border-radius:50%;color:var(--green);font-family:'VT323',monospace;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 0 12px rgba(0,255,65,0.25);opacity:0;pointer-events:none;transition:opacity .25s}
 #toTop.show{opacity:1;pointer-events:auto}
 #famPane{margin-top:28px}
@@ -550,7 +549,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   </div>
   <div class="card" id="famCard">
     <div class="card-inner">
-      <button type="button" class="btn" id="famToSolo"><span>&#9654; РАСЧЁТ ИРК ЧЕЛОВЕКА</span></button>
+      <button type="button" class="btn" id="famToSolo" style="display:none"><span>&#9654; РАСЧЁТ ИРК ЧЕЛОВЕКА</span></button>
       <button type="button" class="btn" id="famOpenPair"><span>&#9654; РАСЧЁТ ИРК ПАРЫ</span></button>
       <button type="button" class="btn" id="famOpen"><span>&#9654; РАСЧЁТ ИРК СЕМЬИ</span></button>
       <div id="famPane" class="mode-family" style="display:none">
@@ -882,11 +881,27 @@ function setMode(mode){
   document.getElementById("famMsg").style.display="none";
   updateAddKid();
 }
+/* Кнопки взаимозаменяемые: прячем ту, что ведёт туда, где человек уже находится */
+function updateNav(open){
+  var btns=[["famToSolo",null],["famOpenPair","pair"],["famOpen","family"]],first=true;
+  btns.forEach(function(b){
+    var el=document.getElementById(b[0]),show=open?b[1]!==famMode:b[1]!==null;
+    el.style.display=show?"":"none";
+    if(show){el.style.marginTop=first?"0":"";first=false;}
+  });
+}
+function closeFam(){
+  document.getElementById("famPane").style.display="none";
+  document.getElementById("famHeader").style.display="none";
+  document.getElementById("famCard").style.marginTop="";
+  updateNav(false);
+}
 function openFam(mode){
   document.getElementById("famPane").style.display="block";
   document.getElementById("famHeader").style.display="block";
   document.getElementById("famCard").style.marginTop="0";
   setMode(mode||"family");
+  updateNav(true);
 }
 
 /* ── дерево: взрослые сверху, дети и питомцы снизу ── */
@@ -1096,7 +1111,8 @@ document.getElementById("famSolo").addEventListener("click",function(){
 });
 
 document.getElementById("famOpenPair").addEventListener("click",function(){openFam("pair");});
-document.getElementById("famToSolo").addEventListener("click",function(){document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});});
+document.getElementById("famToSolo").addEventListener("click",function(){closeFam();document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});});
+updateNav(false);
 (function(){
   var up=document.getElementById("toTop");
   var check=function(){up.classList.toggle("show",window.scrollY>600);};
