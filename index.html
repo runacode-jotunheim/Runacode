@@ -388,7 +388,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 #famPane{margin-top:28px}
 #famPane.mode-pair .fam-only,#famPane.mode-family .pair-only{display:none}
 .fam-remove{display:block;width:100%;margin-top:14px;padding:10px;background:transparent;border:1px dashed rgba(0,255,65,0.3);border-radius:6px;color:var(--green-dim);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
-#famAddKid{margin-top:18px}
+.fam-add{display:block;width:100%;margin-top:12px;padding:9px;background:transparent;border:1px dashed rgba(0,255,65,0.3);border-radius:6px;color:var(--green-dim);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+select:invalid{color:rgba(0,255,65,0.35)}
 .fam-note{font-size:12px;line-height:1.7;color:rgba(200,255,218,0.7);text-align:center;margin:0 0 20px}
 .fam-hint{font-size:11px;line-height:1.6;color:rgba(200,255,218,0.7);margin:14px 0 4px;text-align:center}
 .fam-person{margin-top:18px;padding:4px 14px 16px;border:1px solid rgba(0,255,65,0.15);border-radius:8px;background:rgba(0,255,65,0.02)}
@@ -407,7 +408,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .fam-node-col{flex:1 1 0;min-width:0}
 .fam-node-runes{font-family:'VT323',monospace;font-size:clamp(26px,8vw,40px);line-height:1;color:var(--green);text-shadow:0 0 12px var(--green)}
 .fam-node-names{font-size:8px;letter-spacing:0;line-height:1.5;color:rgba(200,255,218,0.65);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:380px){#famCard{padding-left:14px;padding-right:14px}.fam-node{padding-left:1px;padding-right:1px}.fam-node-names{font-size:7px}}
+@media(max-width:380px){.fam-add{letter-spacing:0}#famCard{padding-left:14px;padding-right:14px}.fam-node{padding-left:1px;padding-right:1px}.fam-node-names{font-size:7px}}
 .fam-acc{margin-bottom:12px;border:1px solid rgba(0,255,65,0.15);border-radius:8px;overflow:hidden}
 .fam-acc-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 14px;cursor:pointer;font-size:10px;letter-spacing:2px;color:var(--green);text-transform:uppercase;background:rgba(0,255,65,0.04)}
 .fam-acc-body{display:none;padding:14px 12px 2px}
@@ -559,7 +560,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
         <div class="fam-hint fam-only">Нужно внести хотя бы двоих членов семьи.<br>Вноси тех, кто тебя растил. Если это были бабушка, дедушка, отчим, мачеха или приёмные родители — выбери их в списке.<br>Детей и питомцев можно добавить несколько.</div>
         <div class="fam-hint pair-only">Внеси данные обоих партнёров.</div>
         <div class="fam-person">
-          <label class="fam-only">Член семьи</label><select class="fam-only" id="f_dad_role"><option selected>Папа</option><option>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Приёмный папа</option><option>Приёмная мама</option></select>
+          <label class="fam-only">Член семьи</label><select class="fam-only" id="f_dad_role" required><option value="" selected disabled hidden>не выбрано</option><option>Папа</option><option>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Приёмный папа</option><option>Приёмная мама</option></select>
           <label class="pair-only">Партнёр 1</label>
           <label>Фамилия</label><input id="f_dad_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_dad_name" placeholder="введите имя">
@@ -567,7 +568,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
           <label>Дата рождения</label><input type="date" id="f_dad_dob">
         </div>
         <div class="fam-person">
-          <label class="fam-only">Член семьи</label><select class="fam-only" id="f_mom_role"><option>Папа</option><option selected>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Приёмный папа</option><option>Приёмная мама</option></select>
+          <label class="fam-only">Член семьи</label><select class="fam-only" id="f_mom_role" required><option value="" selected disabled hidden>не выбрано</option><option>Папа</option><option>Мама</option><option>Дедушка</option><option>Бабушка</option><option>Отчим</option><option>Мачеха</option><option>Приёмный папа</option><option>Приёмная мама</option></select>
           <label class="pair-only">Партнёр 2</label>
           <label>Фамилия</label><input id="f_mom_surname" placeholder="введите фамилию">
           <label>Имя</label><input id="f_mom_name" placeholder="введите имя">
@@ -575,8 +576,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
           <label>Дата рождения</label><input type="date" id="f_mom_dob">
         </div>
         <div class="fam-only" id="famKids"></div>
-        <button type="button" class="btn fam-only" id="famAddKid"><span>+ ДОБАВИТЬ РЕБЁНКА ИЛИ ПИТОМЦА</span></button>
         <button class="btn" id="famBtn"><span>&#9654; ИНИЦИАЛИЗАЦИЯ</span></button>
+        <button type="button" class="fam-add fam-only" id="famAddKid">+ добавить ребёнка или питомца</button>
         <div class="fam-msg" id="famMsg">
           <p id="famMsgText"></p>
           <button type="button" class="btn" id="famSolo"><span>Данных нет? Рассчитать индивидуальный код</span></button>
@@ -835,7 +836,7 @@ var famOne=null;
 function famEl(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
 function famStore(id,el){
   var saved=sessionStorage.getItem("irk_"+id);
-  if(saved!==null){el.value=saved;if(el.tagName==="SELECT"&&el.value!==saved)el.selectedIndex=0;}
+  if(saved!==null){el.value=saved;if(el.tagName==="SELECT"&&el.value!==saved)el.value="";}
   var save=function(){sessionStorage.setItem("irk_"+id,el.value);};
   el.addEventListener("input",save);el.addEventListener("change",save);
 }
@@ -847,7 +848,8 @@ function addKid(key){
   if(!key){var n=1;while(kidKeys.indexOf(n===1?"kid":"kid"+n)>=0)n++;key=n===1?"kid":"kid"+n;}
   var box=famEl("div","fam-person");box.id="fp_"+key;
   box.appendChild(famEl("label",null,"Член семьи"));
-  var sel=famEl("select");sel.id="f_"+key+"_role";
+  var sel=famEl("select");sel.id="f_"+key+"_role";sel.required=true;
+  var ph=famEl("option",null,"не выбрано");ph.value="";ph.disabled=true;ph.hidden=true;ph.selected=true;sel.appendChild(ph);
   KID_ROLES.forEach(function(r){sel.appendChild(famEl("option",null,r));});
   box.appendChild(sel);
   [["surname","Фамилия","введите фамилию","text"],["name","Имя","введите имя","text"],["patr","Отчество (при наличии)","не обязательно","text"],["dob","Дата рождения","","date"]].forEach(function(f){
@@ -968,6 +970,7 @@ function calcFamily(){
       return;
     }
 
+    if(!pair&&people.some(function(d){return !d.role;})){say("Выбери, кто это, в поле «Член семьи».",false);return;}
     if(!pair){
       /* ребёнок не может родиться раньше папы, мамы, дедушки или бабушки; будущая дата допустима */
       var BIRTH={"Папа":1,"Мама":1,"Дедушка":1,"Бабушка":1};
@@ -982,8 +985,8 @@ function calcFamily(){
     document.getElementById("famResultLabel").textContent=pair?"► рунические коды пары ◄":"► рунические коды вашей семьи ◄";
     var tri=document.getElementById("famTri");tri.innerHTML='<svg xmlns="http://www.w3.org/2000/svg"></svg>';
     var rowA=famEl("div","fam-row adults");
-    rowA.appendChild(famNode(pair?"Партнёр 1":document.getElementById("f_dad_role").value,dad));
-    rowA.appendChild(famNode(pair?"Партнёр 2":document.getElementById("f_mom_role").value,mom));
+    rowA.appendChild(famNode(pair?"Партнёр 1":(document.getElementById("f_dad_role").value||"—"),dad));
+    rowA.appendChild(famNode(pair?"Партнёр 2":(document.getElementById("f_mom_role").value||"—"),mom));
     tri.appendChild(rowA);
     if(kids.length){var rowK=famEl("div","fam-row kids");kids.forEach(function(d){rowK.appendChild(famNode(d.role,d));});tri.appendChild(rowK);}
 
