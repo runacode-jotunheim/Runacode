@@ -1045,9 +1045,12 @@ function codeBlock(box,title,code,texts,labels,lead){
     var blk=famEl("div","result-block");
     var lab=famEl("div","result-label");
     lab.appendChild(famEl("span","block-rune-sym",RS[r]||""));
-    lab.appendChild(famEl("span",null,p[1]+" — "+r));
+    var ttl=famEl("span",null,p[1]+" — "+r);ttl.style.flex="1";lab.appendChild(ttl);
+    var tg=famEl("span","result-toggle","－");lab.appendChild(tg);
     var ds=famEl("div","desc");ds.style.display="block";
     ds.innerHTML=texts[r]||"";
+    lab.style.cursor="pointer";
+    lab.addEventListener("click",function(){var open=ds.style.display==="block";ds.style.display=open?"none":"block";tg.textContent=open?"＋":"－";});
     blk.appendChild(lab);blk.appendChild(ds);box.appendChild(blk);
   });
 }
