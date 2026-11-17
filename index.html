@@ -587,9 +587,9 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
           <p class="fam-note" id="famNote" style="display:none"></p>
           <div id="famAcc"></div>
           <div class="fam-cta">
-            <p id="famCtaLead">Коды рядом — это ещё не ответ.</p>
-            <p>Как они читаются вместе, где между вами опора и где конфликт — разбирается лично.</p>
-            <a class="btn" id="famCta" target="_blank" rel="noopener"><span>&#9654; ЗАПИСАТЬСЯ НА РАЗБОР</span></a>
+            <p id="famCtaLead"></p>
+            <p>Нажимайте кнопку ниже и записывайтесь на разбор.</p>
+            <a class="btn" id="famCta" target="_blank" rel="noopener"><span id="famCtaBtn">&#9654; ЗАПИСАТЬСЯ НА РАЗБОР</span></a>
           </div>
         </div>
       </div><!-- /famPane -->
@@ -1001,7 +1001,8 @@ function calcFamily(){
       note.textContent=kids.length?"Код семьи считается, когда в семье есть хотя бы один взрослый.":"Код семьи считается, когда в семье есть ребёнок или питомец. Для двоих взрослых есть отдельный расчёт пары.";
       note.style.display="block";
     }else note.style.display="none";
-    document.getElementById("famCtaLead").textContent=pair?"Два кода рядом — это ещё не ответ.":"Коды рядом — это ещё не ответ.";
+    document.getElementById("famCtaLead").textContent="На индивидуальном разборе мы разберём, как взаимодействуют ваши руны Сущности, Личности и Золотые "+(pair?"в паре":"в семье")+", к чему вам нужно прийти, где вы друг друга поддерживаете, за что цепляетесь и что можно поменять уже сейчас.";
+    document.getElementById("famCtaBtn").textContent="▶ ЗАПИСАТЬСЯ НА РАЗБОР "+(pair?"ПАРЫ":"СЕМЬИ");
     document.getElementById("famCta").href=FAMILY_CTA_URL;
     res.style.display="block";
     drawTree();
